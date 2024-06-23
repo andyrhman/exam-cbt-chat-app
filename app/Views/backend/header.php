@@ -115,7 +115,7 @@
                             <li><a href=""><i class="ti-user"></i> Edit Profile</a></li>
                             <li><a href="javascript:void(0)"><i class="ti-email"></i>  Inbox</a></li>
                             <li><a href="javascript:void(0)"><i class="ti-settings"></i>  Account Setting</a></li>
-                            <li><a href=""><i class="fa fa-power-off"></i>  Logout</a></li>
+                            <li><a href="<?php echo base_url();?>login/logout"><i class="fa fa-power-off"></i>  Logout</a></li>
                         </ul>
                         <!-- /.dropdown-user -->
                     </li>

@@ -19,7 +19,7 @@ class Login extends Controller
     {
         $session = session();
         if ($session->get('admin_login') == 1) {
-            return redirect()->to(base_url('admin/d'));
+            return redirect()->to(base_url('admin/dashboard'));
         }
 
         return view('backend/login');
@@ -33,7 +33,7 @@ class Login extends Controller
 
         if ($this->loginModel->adminLoginFunction($email, $password)) {
             session()->setFlashdata('flash_message', 'Successfully Login');
-            return redirect()->to(base_url('admin/d'));
+            return redirect()->to(base_url('admin/dashboard'));
         } else {
             return redirect()->to(base_url('login'));
         }

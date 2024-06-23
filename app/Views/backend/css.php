@@ -14,8 +14,7 @@
 		?>
 
     <link rel="icon"  sizes="16x16" href="<?php echo base_url() ?>uploads/logo.png">
-    <!-- <title><?php //echo $page_title;?>&nbsp;|&nbsp;<?php //echo $system_title;?></title> -->
-    <title>Dashboard</title>
+    <title><?php echo $page_title;?>&nbsp;|&nbsp;<?php echo $system_title;?></title>
     <!-- Bootstrap Core CSS -->
     <link href="<?php echo base_url(); ?>optimum/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" >
 

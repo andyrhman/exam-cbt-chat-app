@@ -141,10 +141,22 @@
 
     <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/toast-master/js/jquery.toast.js"></script>
 
+    <?php if ((session()->getFlashdata('error_message')) != ""): ?>
 
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $.toast({
 
-
-
+                    text: '<?= session()->getFlashdata('error_message'); ?>',
+                    position: 'top-right',
+                    loaderBg: '#f56954',
+                    icon: 'warning',
+                    hideAfter: 3500,
+                    stack: 6
+                })
+            });
+        </script>
+    <?php endif; ?>
 
 </body>
 

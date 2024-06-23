@@ -442,12 +442,12 @@
     </script>
 	
 	<script src="<?php echo base_url(); ?>optimum/plugins/bower_components/toast-master/js/jquery.toast.js"></script>
-	<?php //if (($this->session->flashdata('flash_message')) != ""): ?>
-	<!-- <script type="text/javascript">
+	<?php if ((session()->getFlashdata('flash_message')) != ""): ?>
+	<script type="text/javascript">
     $(document).ready(function() {
         $.toast({
 			heading: 'Congratulations!!!',
-            text: '<?php //echo $this->session->flashdata('flash_message'); ?>',
+            text: '<?= session()->getFlashdata('flash_message'); ?>',
             position: 'top-right',
             loaderBg: '#ff6849',
             icon: 'success',
@@ -455,8 +455,8 @@
             stack: 6
         })
     });
-    </script> -->
-	<?php //endif; ?>
+    </script>
+	<?php endif; ?>
 	
 	
 	

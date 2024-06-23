@@ -4,7 +4,7 @@
 // $system_address = $this->db->get_where('settings', array('type' => 'address'))->row()->description;
 // $footer = $this->db->get_where('settings', array('type' => 'footer'))->row()->description;
 // $text_align = $this->db->get_where('settings', array('type' => 'text_align'))->row()->description;
-// $loginType = $this->session->userdata('login_type');
+$loginType = session()->get('login_type');
 ?>
 <?php include 'css.php'; ?>
 
@@ -16,15 +16,12 @@
 
 
     <?php include 'header.php'; ?>
-    <?php //include $loginType . '/navigation.php'; ?>
+    <?php include $loginType . '/navigation.php'; ?>
     <?php include 'page_info.php'; ?>
-    <?php //include $loginType . '/' . $page_name . '.php'; ?>
+    <?php include $loginType . '/' . $page_name . '.php'; ?>
 
 
     <?php // include 'dashboard.php'; ?>
-
-
-
 
     <!-- .right-sidebar -->
     <div class="right-sidebar" style="background:url(<?php echo base_url(); ?>assets/images/10.png); opacity: 0.9;">
@@ -47,14 +44,7 @@
 </div>
 <!-- /.container-fluid -->
 
-
-
-
-
-
 <?php include 'footer.php'; ?>
-
-
 
 </div>
 <!-- /#page-wrapper -->
