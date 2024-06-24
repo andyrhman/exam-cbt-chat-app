@@ -1,6 +1,9 @@
-        <?php 
+<?php
+use CodeIgniter\Database\Config;
 
-		//////////LOADING SYSTEM SETTINGS FOR ALL PAGES AND ACCOUNTS/////////
-		$system_title	=	$this->db->get_where('settings' , array('type'=>'system_title'))->row()->description;
-		$session	=	$this->db->get_where('settings' , array('type'=>'session'))->row()->description;
-		?>
+$db = Config::connect();
+
+//////////LOADING SYSTEM SETTINGS FOR ALL PAGES AND ACCOUNTS/////////
+$system_title = $db->table('settings')->getWhere(['type' => 'system_title'])->getRow()->description;
+$session = $db->table('settings')->getWhere(['type' => 'session'])->getRow()->description;
+?>

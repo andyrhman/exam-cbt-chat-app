@@ -1,3 +1,11 @@
+<?php
+use CodeIgniter\Database\Config;
+
+$db = Config::connect();
+
+$system_name = $db->table('settings')->getWhere(['type' => 'system_name'])->getRow()->description;
+$system_title = $db->table('settings')->getWhere(['type' => 'system_title'])->getRow()->description;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +17,7 @@
         content="We ddevelop creative software, eye catching software. We also train to become a creative thinker">
     <meta name="author" content="OPTIMUM LINKUP COMPUTERS">
     <link rel="icon" sizes="16x16" href="<?php echo base_url() ?>uploads/logo.png">
-    <title>ERP Name Here</title>
+    <title>Login | <?= $system_title ?></title>
     <!-- Bootstrap Core CSS -->
     <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link
@@ -39,7 +47,6 @@
         <div class="cssload-speeding-wheel"></div>
     </div>
 
-
     <section id="wrapper" class="login-register">
         <div class="login-box login-sidebar">
             <div class="white-box">
@@ -47,9 +54,8 @@
                     <br><br><br>
                     <img src="<?php echo base_url() ?>uploads/logo.png" class="img-circle" width="70" height="70" />
                 </h4>
-                <h5 align="center"><a href="">System Name Here</a></h5>
+                <h5 align="center"><a href=""><?= $system_name ?></a></h5>
                 <br>
-
 
                 <form method="post" role="form" id="loginform" class="form-horizontal form-material"
                     action="<?= base_url('login/check_login') ?>">
@@ -93,7 +99,6 @@
                     <br><br><br><br><br><br><br><br><br><br>
                 </form>
 
-
                 <form method="post" role="form" id="recoverform" class="form-horizontal form-material"
                     action="<?php echo base_url(); ?>login/reset_password">
                     <input type="email" name="email" class="form-control" placeholder="email" style="width:100%"
@@ -115,8 +120,6 @@
 
     </section>
     <script src="js/index.js"></script>
-
-
     <!-- jQuery -->
     <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap Core JavaScript -->
@@ -127,7 +130,6 @@
     <!-- Menu Plugin JavaScript -->
     <script
         src="<?php echo base_url(); ?>optimum/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
-
 
     <!--slimscroll JavaScript -->
     <script src="<?php echo base_url(); ?>optimum/js/jquery.slimscroll.js"></script>

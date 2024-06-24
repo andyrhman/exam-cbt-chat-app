@@ -1,10 +1,16 @@
 <?php
+use CodeIgniter\Database\Config;
 
-// $system_name = $this->db->get_where('settings', array('type' => 'system_name'))->row()->description;
-// $system_address = $this->db->get_where('settings', array('type' => 'address'))->row()->description;
-// $footer = $this->db->get_where('settings', array('type' => 'footer'))->row()->description;
-// $text_align = $this->db->get_where('settings', array('type' => 'text_align'))->row()->description;
+$db = Config::connect();
+
+$system_name = $db->table('settings')->getWhere(['type' => 'system_name'])->getRow()->description;
+$system_address = $db->table('settings')->getWhere(['type' => 'address'])->getRow()->description;
+$footer = $db->table('settings')->getWhere(['type' => 'footer'])->getRow()->description;
+$text_align = $db->table('settings')->getWhere(['type' => 'text_align'])->getRow()->description;
+$skin_colour = $db->table('settings')->getWhere(['type' => 'skin_colour'])->getRow()->description;
 $loginType = session()->get('login_type');
+helper('form');
+
 ?>
 <?php include 'css.php'; ?>
 
@@ -18,8 +24,9 @@ $loginType = session()->get('login_type');
     <?php include 'header.php'; ?>
     <?php include $loginType . '/navigation.php'; ?>
     <?php include 'page_info.php'; ?>
-    <?php include $loginType . '/' . $page_name . '.php'; ?>
 
+    <!-- // * Showing the main page template -->
+    <?php include $loginType . '/' . $page_name . '.php'; ?>
 
     <?php // include 'dashboard.php'; ?>
 

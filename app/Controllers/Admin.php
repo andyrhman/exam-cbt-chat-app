@@ -37,7 +37,25 @@ class Admin extends Controller
 
         $data = [
             'page_name' => 'dashboard',
-            'page_title' => 'Admin Dashboard', // You can replace this with the get_phrase() equivalent if necessary
+            'page_title' => get_phrase('Admin Dashboard'), // You can replace this with the get_phrase() equivalent if necessary
+            'system_title' => $system_title
+        ];
+
+        return view('backend/index', $data);
+    }
+
+    public function manage_profile()
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $query = $this->db->table('settings')->getWhere(['type' => 'system_title'])->getRow();
+        $system_title = $query->description;
+
+        $data = [
+            'page_name' => 'manage_profile',
+            'page_title' => get_phrase('Admin Dashboard'), // You can replace this with the get_phrase() equivalent if necessary
             'system_title' => $system_title
         ];
 

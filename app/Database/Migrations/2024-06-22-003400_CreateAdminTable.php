@@ -26,6 +26,12 @@ class CreateAdminTable extends Migration
                 'character set' => 'utf8',
                 'collation' => 'utf8_unicode_ci'
             ],
+            'phone' => [
+                'type' => 'LONGTEXT',
+                'null' => false,
+                'character set' => 'utf8',
+                'collation' => 'utf8_unicode_ci'
+            ],
             'password' => [
                 'type' => 'LONGTEXT',
                 'null' => false,
