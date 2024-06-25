@@ -4,14 +4,20 @@ namespace App\Controllers;
 
 use CodeIgniter\Controller;
 use CodeIgniter\Database\Config;
+use App\Models\AdminModel;
+
 
 class Admin extends Controller
 {
     protected $session;
     protected $db;
- 
+    protected $adminModel;
+    protected $request;
+
     public function __construct()
     {
+        $this->adminModel = new AdminModel();
+        $this->request = service('request');
         $this->db = Config::connect();
         $this->session = session();
     }
@@ -60,5 +66,30 @@ class Admin extends Controller
         ];
 
         return view('backend/index', $data);
+    }
+
+    public function update_profile()
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $name = esc($this->request->getPost('name'));
+        $email = esc($this->request->getPost('email'));
+        $phone = esc($this->request->getPost('phone'));
+
+        $admin_id = $this->session->get('admin_id');
+
+        // Update admin information in the database
+        $this->adminModel->updateAdminInformation($admin_id, $name, $email, $phone);
+
+        // Handle the file upload
+        $file = $this->request->getFile('userfile');
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+            $file->move('uploads/admin_image/', $admin_id . '.jpg');
+        }
+
+        $this->session->setFlashdata('flash_message', 'Data Updated Successfully');
+        return redirect()->to(base_url('admin/manage_profile'));
     }
 }
