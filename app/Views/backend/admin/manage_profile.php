@@ -1,11 +1,16 @@
 <?php
 
 $adminModel = new \App\Models\AdminModel();
+$crudModel = new App\Models\CrudModel();
+
 $get_admin_info = $adminModel->select_admin_information_from_admin_table();
 
 if (!empty($get_admin_info)) {
     $admin_data = $get_admin_info[0];
 }
+
+$image_url = $crudModel->get_image_url('admin', $admin_data['admin_id']);  // Adjust 'admin' and id key accordingly
+
 ?>
 <div class="row">
     <div class="col-md-6">
@@ -26,9 +31,10 @@ if (!empty($get_admin_info)) {
                         <input type="text" class="form-control" name="phone" value="<?= esc($admin_data['phone']) ?>">
                     </div>
                     <div class="form-group">
-                        <label for="userfile"><?= get_phrase("Admin Image"); ?></label>
+                        <label for="userfile"><?= esc(get_phrase("Admin Image")); ?></label>
                         <input type="file" class="form-control" name="userfile" onChange="readURL(this);">
-                        <img id="blah" src="" alt="" height="200" width="200" style="display:none;">
+                        <img id="blah" src="<?= esc($image_url); ?>" height="200"
+                            width="200" style="<?= empty($image_url) ? 'display:none;' : '' ?>">
                     </div>
                     <button type="submit"
                         class="btn btn-success btn-rounded btn-sm btn-block"><?= get_phrase("Save"); ?></button>

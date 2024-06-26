@@ -5,6 +5,7 @@ namespace App\Controllers;
 use CodeIgniter\Controller;
 use CodeIgniter\Database\Config;
 use App\Models\AdminModel;
+use App\Models\CrudModel;
 
 
 class Admin extends Controller
@@ -13,9 +14,11 @@ class Admin extends Controller
     protected $db;
     protected $adminModel;
     protected $request;
+    protected $crudModel;
 
     public function __construct()
     {
+        $this->crudModel = new CrudModel();
         $this->adminModel = new AdminModel();
         $this->request = service('request');
         $this->db = Config::connect();
@@ -57,6 +60,7 @@ class Admin extends Controller
         }
 
         $query = $this->db->table('settings')->getWhere(['type' => 'system_title'])->getRow();
+
         $system_title = $query->description;
 
         $data = [

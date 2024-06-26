@@ -40,6 +40,13 @@
             $('#blah').hide(); // Hide the image box if no file is selected
         }
     }
+
+    // Initial check to show the image if it has a valid src
+    $(document).ready(function() {
+        if ($('#blah').attr('src') !== '') {
+            $('#blah').show();
+        }
+    });
 </script>
 
 <!-- ./wrapper -->
@@ -58,6 +65,13 @@
             $('#blah').hide(); // Hide the image box if no file is selected
         }
     }
+
+    // Initial check to show the image if it has a valid src
+    $(document).ready(function() {
+        if ($('#blah').attr('src') !== '') {
+            $('#blah').show();
+        }
+    });
 </script>
 
 
