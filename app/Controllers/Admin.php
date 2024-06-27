@@ -90,10 +90,34 @@ class Admin extends Controller
         // Handle the file upload
         $file = $this->request->getFile('userfile');
         if ($file && $file->isValid() && !$file->hasMoved()) {
+            $destination = 'uploads/admin_image/' . $admin_id . '.jpg';
+            // Check if the file already exists
+            if (file_exists($destination)) {
+                // Delete the existing file
+                unlink($destination);
+            }
+            // Move the new file to the destination
             $file->move('uploads/admin_image/', $admin_id . '.jpg');
         }
 
         $this->session->setFlashdata('flash_message', 'Data Updated Successfully');
+        return redirect()->to(base_url('admin/manage_profile'));
+    }
+
+    public function update_password()
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $password = $this->request->getPost('password');
+        $confirm_password = $this->request->getPost('confirm_password');
+
+        $admin_id = $this->session->get('admin_id');
+
+        // Update admin information in the database
+        $this->adminModel->changeAdminPasswordInformation($admin_id, $password, $confirm_password);
+
         return redirect()->to(base_url('admin/manage_profile'));
     }
 }

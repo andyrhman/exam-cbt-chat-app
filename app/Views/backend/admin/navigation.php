@@ -2,26 +2,29 @@
 <div class="navbar-default sidebar" role="navigation">
     <div class="sidebar-nav navbar-collapse slimscrollsidebar">
         <ul class="nav" id="side-menu">
-            <li class="sidebar-search hidden-sm hidden-md hidden-lg">
-                <!-- input-group -->
-                <div class="input-group custom-search-form">
-                    <input type="text" class="form-control" placeholder="Search..."> <span class="input-group-btn">
-                        <button class="btn btn-default" type="button"> <i class="fa fa-search"></i> </button>
-                    </span>
-                </div>
-                <!-- /input-group -->
-            </li>
             <li class="user-pro">
-                <a href="#" class="waves-effect"><img src="../plugins/images/users/d1.jpg" alt="user-img"
-                        class="img-circle"> <span class="hide-menu">Dr. Steve Gection<span
-                            class="fa arrow"></span></span>
+                <?php  
+                    $key = session()->get('login_type') . '_id';
+                    $face_file = 'uploads/' . session()->get('login_type') . '_image/' . session()->get($key) . '.jpg';
+                    if (!file_exists($face_file)){
+                        $face_file = 'uploads/default.jpg';
+                    }
+                
+                ?>
+                <a href="#" class="waves-effect">
+                    <img src="<?= base_url($face_file); ?>" alt="user-img"
+                    class="img-fluid img-circle"> 
+                    <span class="hide-menu">
+                        <?php 
+                            $crudModel = new \App\Models\CrudModel();
+                            $account_type = session()->get('login_type');
+                            $account_id = $account_type.'_id';
+                            $name = $crudModel->get_type_name_by_id($account_type, session()->get($account_id), 'name');
+                            echo $name;
+                        
+                        ?>
+                    </span>
                 </a>
-                <ul class="nav nav-second-level">
-                    <li><a href="javascript:void(0)"><i class="ti-user"></i> My Profile</a></li>
-                    <li><a href="javascript:void(0)"><i class="ti-email"></i> Inbox</a></li>
-                    <li><a href="javascript:void(0)"><i class="ti-settings"></i> Account Setting</a></li>
-                    <li><a href="javascript:void(0)"><i class="fa fa-power-off"></i> Logout</a></li>
-                </ul>
             </li>
             <li class="<?php if($page_name == 'dashboard') echo 'active'; ?>"> <a href="<?= base_url('admin/dashboard'); ?>" class="waves-effect"><i class="ti-dashboard p-r-10"></i> <span
                         class="hide-menu"><?= get_phrase("Dashboard"); ?></span></a> </li>

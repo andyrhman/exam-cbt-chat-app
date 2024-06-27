@@ -16,22 +16,25 @@ class LoginModel extends Model
 
     public function adminLoginFunction($email, $password)
     {
-        $credential = ['email' => $email, 'password' => sha1($password)];
-
-        $query = $this->db->table($this->table)->getWhere($credential);
+        $query = $this->db->table($this->table)->getWhere(['email' => $email]);
         if ($query->getNumRows() > 0) {
             $row = $query->getRow();
-
-            $session = session();
-            $session->set([
-                'login_type' => 'admin',
-                'admin_login' => '1',
-                'admin_id' => $row->admin_id,
-                'login_user_id' => $row->admin_id,
-                'name' => $row->name,
-            ]);
-
-            return true;
+            
+            if (password_verify($password, $row->password)) {
+                $session = session();
+                $session->set([
+                    'login_type' => 'admin',
+                    'admin_login' => '1',
+                    'admin_id' => $row->admin_id,
+                    'login_user_id' => $row->admin_id,
+                    'name' => $row->name,
+                ]);
+    
+                return true;
+            } else {
+                session()->setFlashdata('error_message', 'Invalid Login Detail');
+                return false;
+            }
         } else {
             session()->setFlashdata('error_message', 'Invalid Login Detail');
             return false;
