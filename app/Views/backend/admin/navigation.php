@@ -29,10 +29,9 @@
             <li class="<?php if($page_name == 'dashboard') echo 'active'; ?>"> <a href="<?= base_url('admin/dashboard'); ?>" class="waves-effect"><i class="ti-dashboard p-r-10"></i> <span
                         class="hide-menu"><?= get_phrase("Dashboard"); ?></span></a> </li>
             <li> <a href="javascript:void(0);" class="waves-effect"><i class="ti-calendar p-r-10"></i> <span
-                        class="hide-menu"> Appointment <span class="fa arrow"></span></span></a>
+                        class="hide-menu"> <?= get_phrase("General Settings"); ?> <span class="fa arrow"></span></span></a>
                 <ul class="nav nav-second-level">
-                    <li> <a href="doctor-schedule.html">Doctor Schedule</a> </li>
-                    <li> <a href="book-appointment.html">Book Appointment</a> </li>
+                    <li> <a href="<?= base_url('setting/system_settings');?>"><?= get_phrase('System Settings')?></a> </li>
                 </ul>
             </li>
             <li class="<?php if($page_name == 'manage_profile') echo 'active';?>">
