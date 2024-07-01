@@ -74,6 +74,34 @@
     });
 </script>
 
+<!-- ./wrapper -->
+<script type="text/javascript">
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                document.getElementById('blahblah').src = e.target.result;
+                document.getElementById('blahblah').style.display = 'block'; // Show the image box
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            document.getElementById('blahblah').style.display = 'none'; // Hide the image box if no file is selected
+        }
+    }
+
+    // Initial check to show the image if it has a valid src
+    document.addEventListener('DOMContentLoaded', function() {
+        var img = document.getElementById('blahblah');
+        if (img.src && img.src !== window.location.href) {
+            img.style.display = 'block';
+        } else {
+            img.style.display = 'none';
+        }
+    });
+</script>
+
 
 <!-- jQuery -->
 <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/jquery/dist/jquery.min.js"></>

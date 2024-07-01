@@ -21,3 +21,8 @@ $routes->post('/admin/manage_profile/register', 'Register::create');
 
 // * Setting
 $routes->get('/setting/system_settings', 'Setting::system_settings');
+$routes->post('/setting/system_settings/update', 'Setting::update_settings');
+$routes->post('/setting/system_settings/logo', 'Setting::update_logo');
+$routes->post('/setting/system_settings/theme', 'Setting::update_theme');
+
+

@@ -44,17 +44,56 @@ class Setting extends BaseController
         if ($this->session->get('admin_login') != 1) {
             return redirect()->to(base_url('login'));
         }
+    
+        $data = [
+            'system_name' => esc($this->request->getPost('system_name')),
+            'system_title' => esc($this->request->getPost('system_title')),
+            'phone' => esc($this->request->getPost('phone')),
+            'currency' => esc($this->request->getPost('currency')),
+            'system_email' => esc($this->request->getPost('system_email')),
+            'paypal_email' => esc($this->request->getPost('paypal_email')),
+            'session' => esc($this->request->getPost('session')),
+            'text_align' => esc($this->request->getPost('text_align')),
+            'address' => esc($this->request->getPost('address')),
+            'footer' => esc($this->request->getPost('footer'))
+        ];
+    
+        $this->systemModel->updateSystemInformation($data);
+    
+        return redirect()->to(base_url('setting/system_settings'));
+    }    
 
-        $name = esc($this->request->getPost('name'));
-        $email = esc($this->request->getPost('email'));
-        $phone = esc($this->request->getPost('phone'));
-
-        $admin_id = $this->session->get('admin_id');
-
-        if($this->systemModel->updateSystemInformation()){
-            $this->session->setFlashdata('flash_message', 'Data Updated Successfully');
+    public function update_logo(){
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
         }
         
+        // Handle the file upload
+        $file = $this->request->getFile('userfile');
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+            $destination = 'uploads/logo.png';
+            // Check if the file already exists
+            if (file_exists($destination)) {
+                // Delete the existing file
+                unlink($destination);
+            }
+            // Move the new file to the destination
+            $file->move('uploads/', 'logo.png');
+            $this->session->setFlashdata('flash_message', 'Logo Updated Successfully');
+
+        }
+        return redirect()->to(base_url('setting/system_settings'));
+
+    }
+    public function update_theme(){
+        
+        $skin_colour = esc($this->request->getPost('skin_colour'));
+
+        if ($this->systemModel->updateSystemTheme($skin_colour)) {
+            $this->session->setFlashdata('flash_message', 'Theme Updated Successfully');
+        }
+
         return redirect()->to(base_url('setting/system_settings'));
     }
+
 }
