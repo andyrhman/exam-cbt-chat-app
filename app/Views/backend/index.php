@@ -8,6 +8,7 @@ $system_address = $db->table('settings')->getWhere(['type' => 'address'])->getRo
 $footer = $db->table('settings')->getWhere(['type' => 'footer'])->getRow()->description;
 $text_align = $db->table('settings')->getWhere(['type' => 'text_align'])->getRow()->description;
 $skin_colour = $db->table('settings')->getWhere(['type' => 'skin_colour'])->getRow()->description;
+$footer = $db->table('settings')->getWhere(['type' => 'footer'])->getRow()->description;
 $loginType = session()->get('login_type');
 helper('form');
 

@@ -6,6 +6,7 @@ use CodeIgniter\Controller;
 use CodeIgniter\Database\Config;
 use App\Models\AdminModel;
 use App\Models\CrudModel;
+use App\Models\ClassModel;
 
 
 class Admin extends Controller
@@ -15,11 +16,14 @@ class Admin extends Controller
     protected $adminModel;
     protected $request;
     protected $crudModel;
+    protected $classModel;
+
 
     public function __construct()
     {
         $this->crudModel = new CrudModel();
         $this->adminModel = new AdminModel();
+        $this->classModel = new ClassModel();
         $this->request = service('request');
         $this->db = Config::connect();
         $this->session = session();
@@ -119,5 +123,84 @@ class Admin extends Controller
         $this->adminModel->changeAdminPasswordInformation($admin_id, $password, $confirm_password);
 
         return redirect()->to(base_url('admin/manage_profile'));
+    }
+
+    public function manage_class()
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $query = $this->db->table('settings')->getWhere(['type' => 'system_title'])->getRow();
+
+        $system_title = $query->description;
+
+        $data = [
+            'page_name' => 'class',
+            'page_title' => get_phrase('Manage Class'), // You can replace this with the get_phrase() equivalent if necessary
+            'system_title' => $system_title
+        ];
+
+        return view('backend/index', $data);
+    }
+
+    public function create_class()
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $request = service('request');
+        $data = [
+            'name' => $request->getPost('name'),
+        ];
+
+        if ($this->classModel->createClassFunction($data)) {
+            session()->setFlashdata('success_message', 'Data Created Successfully');
+            return redirect()->to(base_url('admin/classes'));
+        } else {
+            session()->setFlashdata('error_message', 'There is an Error, please try again');
+            return redirect()->to(base_url('admin/classes'));
+        }
+    }
+
+    public function update_class()
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $request = service('request');
+        $data = [
+            'name' => $request->getPost('name'),
+        ];
+
+        if ($this->classModel->updateClassFunction($data)) {
+            session()->setFlashdata('success_message', 'Data Updated Successfully');
+            return redirect()->to(base_url('admin/classes'));
+        } else {
+            session()->setFlashdata('error_message', 'There is an Error, please try again');
+            return redirect()->to(base_url('admin/classes'));
+        }
+    }
+
+    public function delete_class()
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $request = service('request');
+        // $data = [
+        //     'name' => $request->getPost('name'),
+        // ];
+
+        if ($this->classModel->deleteClassFunction()) {
+            session()->setFlashdata('success_message', 'Data Updated Successfully');
+            return redirect()->to(base_url('admin/classes'));
+        } else {
+            session()->setFlashdata('error_message', 'There is an Error, please try again');
+            return redirect()->to(base_url('admin/classes'));
+        }
     }
 }

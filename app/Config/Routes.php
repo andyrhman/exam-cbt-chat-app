@@ -19,6 +19,9 @@ $routes->post('/admin/manage_profile/update', 'Admin::update_profile');
 $routes->post('/admin/manage_profile/changePassword', 'Admin::update_password');
 $routes->post('/admin/manage_profile/register', 'Register::create');
 
+$routes->get('/admin/classes', 'Admin::manage_class');
+
+
 // * Setting
 $routes->get('/setting/system_settings', 'Setting::system_settings');
 $routes->post('/setting/system_settings/update', 'Setting::update_settings');
