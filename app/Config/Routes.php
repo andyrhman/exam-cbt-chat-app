@@ -21,6 +21,11 @@ $routes->post('/admin/manage_profile/register', 'Register::create');
 
 $routes->get('/admin/classes', 'Admin::manage_class');
 
+$routes->get('/admin/teacher', 'Admin::manage_teacher');
+$routes->post('/admin/teacher/create_teacher', 'Admin::create_teacher');
+$routes->post('/admin/teacher/update_teacher', 'Admin::update_teacher');
+$routes->post('/admin/teacher/delete_teacher', 'Admin::delete_teacher');
+
 
 // * Setting
 $routes->get('/setting/system_settings', 'Setting::system_settings');

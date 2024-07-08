@@ -41,7 +41,7 @@
                         echo 'active'; ?>> <a
                             href="<?= base_url('admin/section'); ?>"><?= get_phrase('New Section') ?></a>
                 </ul>
-            </li>
+            </li>  
 
             <li class="<?php if ($page_name == 'subject')
                 echo 'active'; ?>"> <a href="<?= base_url('subject/manage_subject'); ?>" class="waves-effect"><i

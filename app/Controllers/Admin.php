@@ -7,7 +7,7 @@ use CodeIgniter\Database\Config;
 use App\Models\AdminModel;
 use App\Models\CrudModel;
 use App\Models\ClassModel;
-
+use App\Models\TeacherModel;
 
 class Admin extends Controller
 {
@@ -17,6 +17,7 @@ class Admin extends Controller
     protected $request;
     protected $crudModel;
     protected $classModel;
+    protected $teacherModel;
 
 
     public function __construct()
@@ -24,6 +25,7 @@ class Admin extends Controller
         $this->crudModel = new CrudModel();
         $this->adminModel = new AdminModel();
         $this->classModel = new ClassModel();
+        $this->teacherModel = new TeacherModel();
         $this->request = service('request');
         $this->db = Config::connect();
         $this->session = session();
@@ -201,6 +203,99 @@ class Admin extends Controller
         } else {
             session()->setFlashdata('error_message', 'There is an Error, please try again');
             return redirect()->to(base_url('admin/classes'));
+        }
+    }
+
+    public function manage_teacher()
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $query = $this->db->table('settings')->getWhere(['type' => 'system_title'])->getRow();
+
+        $system_title = $query->description;
+
+        $teacherModel = new TeacherModel();
+        $teachers = $teacherModel->selectTeacher();
+
+        $data = [
+            'page_name' => 'teacher',
+            'page_title' => get_phrase('Manage Teacher'), // You can replace this with the get_phrase() equivalent if necessary
+            'system_title' => $system_title,
+            'teachers' => $teachers
+        ];
+
+        return view('backend/index', $data);
+    }
+
+    public function create_teacher()
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $request = service('request');
+
+        $data = [
+            'name' => esc($request->getPost('name')),
+            'email' => esc($request->getPost('email')),
+            'phone' => esc($request->getPost('phone'))
+        ];
+
+        // Handle the file upload
+        $file = $this->request->getFile('userfile');
+
+        $this->teacherModel->createTeacherFunction($data, $file);
+        
+        $this->session->setFlashdata('flash_message', 'Data Updated Successfully');
+
+        return redirect()->to(base_url('admin/teacher'));
+
+    }
+
+    public function update_teacher()
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $request = service('request');
+        $data = [
+            'name' => esc($request->getPost('name')),
+            'email' => esc($request->getPost('email')),
+            'photo' => esc($request->getPost('photo'))
+        ];
+
+        // Handle the file upload
+        $file = $this->request->getFile('userfile');
+
+        if ($this->teacherModel->updateTeacherFunction($data, $file)) {
+            session()->setFlashdata('success_message', 'Data Updated Successfully');
+            return redirect()->to(base_url('admin/teacher'));
+        } else {
+            session()->setFlashdata('error_message', 'There is an Error, please try again');
+            return redirect()->to(base_url('admin/teacher'));
+        }
+    }
+
+    public function delete_teacher()
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $request = service('request');
+        // $data = [
+        //     'name' => $request->getPost('name'),
+        // ];
+
+        if ($this->teacherModel->deleteTeacherFunction()) {
+            session()->setFlashdata('success_message', 'Data Updated Successfully');
+            return redirect()->to(base_url('admin/teacher'));
+        } else {
+            session()->setFlashdata('error_message', 'There is an Error, please try again');
+            return redirect()->to(base_url('admin/teacher'));
         }
     }
 }
