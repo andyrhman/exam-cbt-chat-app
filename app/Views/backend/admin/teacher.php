@@ -1,3 +1,6 @@
+<!-- Teacher List View -->
+
+
 <div class="row">
     <div class="col-md-5">
         <div class="white-box">
@@ -57,21 +60,24 @@
                             <tr>
                                 <td>
                                     <?php
-                                    $crudModel = new App\Models\CrudModel();
+                                    $crudModel = new \App\Models\CrudModel();
                                     $image_url = $crudModel->get_image_url('teacher', $teacher['teacher_id']);
                                     ?>
                                     <img src="<?= $image_url; ?>" class="img-circle" width="30"
                                         alt="<?= $teacher['name']; ?>">
                                 </td>
-                                <td><?php echo $teacher['name']; ?></td>
-                                <td><?php echo $teacher['email']; ?></td>
-                                <td><?php echo $teacher['phone']; ?></td>
+                                <td><?= $teacher['name']; ?></td>
+                                <td><?= $teacher['email']; ?></td>
+                                <td><?= $teacher['phone']; ?></td>
                                 <td>
-                                    <a href="<?php echo site_url('teacher/edit/' . $teacher['teacher_id']); ?>">Edit</a>
-                                    <a href="<?php echo site_url('teacher/delete/' . $teacher['teacher_id']); ?>">Delete</a>
+                                    <button class="btn btn-info btn-rounded btn-sm"
+                                        onclick="showModal('teacher', <?= $teacher['teacher_id']; ?>)">Edit</button>
+                                    <button class="btn btn-danger btn-rounded btn-sm"><?= get_phrase("Delete"); ?></button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
+
+
                     </tbody>
                 </table>
 

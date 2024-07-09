@@ -1,33 +1,87 @@
-    <script type="text/javascript">
-	function showAjaxModal(url)
-	{
-		// SHOWING AJAX PRELOADER IMAGE
-		jQuery('#modal_ajax .modal-body').html('<div style="text-align:center;margin-top:200px;"><img src="<?php echo base_url();?>assets/images/preloader.gif" /></div>');
-		
-		// LOADING THE AJAX MODAL
-		jQuery('#modal_ajax').modal('show', {backdrop: 'true'});
-		
-		// SHOW AJAX RESPONSE ON REQUEST SUCCESS
-		$.ajax({
-			url: url,
-			success: function(response)
-			{
-				jQuery('#modal_ajax .modal-body').html(response);
-			}
-		});
-	}
-	</script>
-    
-    <!-- (Ajax Modal)-->
-	
-    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" id="modal_ajax">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content slimscrollsidebar">
-                <div class="modal-body " style="height:400px"></div>
+<!-- // * Edit Teacher Modal -->
+<!-- Teacher List View -->
+
+<div class="modal fade" id="dataModal" tabindex="-1" aria-labelledby="dataModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dataModalLabel">Edit Data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="dataForm">
+                    <div class="form-group">
+                        <label for="dataName">Name</label>
+                        <input type="text" class="form-control" id="dataName" name="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="dataEmail">Email</label>
+                        <input type="email" class="form-control" id="dataEmail" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="dataPhone">Phone</label>
+                        <input type="text" class="form-control" id="dataPhone" name="phone">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </form>
             </div>
         </div>
     </div>
-    
+</div>
+
+<script>
+    function showModal(data_type, id) {
+        $.ajax({
+            url: '<?= base_url('modal/popup/'); ?>' + data_type + '/' + id,
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                $('#dataName').val(response.name);
+                $('#dataEmail').val(response.email);
+                $('#dataPhone').val(response.phone);
+                $('#dataModal').modal('show');
+            },
+            error: function() {
+                alert('Error loading data.');
+            }
+        });
+    }
+</script>
+
+<!-- // ! Not Working on CI4 -->
+<script type="text/javascript">
+    function showAjaxModal(url) {
+        // Showing AJAX preloader image
+        jQuery('#modal_ajax .modal-body').html('<div style="text-align:center;margin-top:200px;"><img src="<?= base_url(); ?>assets/images/preloader.gif" /></div>');
+        
+        // Loading the AJAX modal
+        jQuery('#modal_ajax').modal('show', { backdrop: 'true' });
+        
+        // Show AJAX response on request success
+        $.ajax({
+            url: url,
+            success: function(response) {
+                jQuery('#modal_ajax .modal-body').html(response);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(textStatus, errorThrown);
+                jQuery('#modal_ajax .modal-body').html(response);
+            }
+        });
+    }
+</script>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" id="modal_ajax">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content slimscrollsidebar">
+            <div class="modal-body" style="height:400px"></div>
+        </div>
+    </div>
+</div>
+
     
     
     

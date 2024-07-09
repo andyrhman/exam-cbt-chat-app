@@ -26,11 +26,13 @@ $routes->post('/admin/teacher/create_teacher', 'Admin::create_teacher');
 $routes->post('/admin/teacher/update_teacher', 'Admin::update_teacher');
 $routes->post('/admin/teacher/delete_teacher', 'Admin::delete_teacher');
 
-
 // * Setting
 $routes->get('/setting/system_settings', 'Setting::system_settings');
 $routes->post('/setting/system_settings/update', 'Setting::update_settings');
 $routes->post('/setting/system_settings/logo', 'Setting::update_logo');
 $routes->post('/setting/system_settings/theme', 'Setting::update_theme');
+
+// * Get Data
+$routes->get('modal/popup/(:any)/(:num)', 'Modal::popup/$1/$2');
 
 
