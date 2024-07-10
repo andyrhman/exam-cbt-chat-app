@@ -136,11 +136,13 @@ class Admin extends Controller
         $query = $this->db->table('settings')->getWhere(['type' => 'system_title'])->getRow();
 
         $system_title = $query->description;
+        $classes = $this->classModel->selectClass();
 
         $data = [
             'page_name' => 'class',
             'page_title' => get_phrase('Manage Class'), // You can replace this with the get_phrase() equivalent if necessary
-            'system_title' => $system_title
+            'system_title' => $system_title,
+            'classes' => $classes
         ];
 
         return view('backend/index', $data);
@@ -152,58 +154,47 @@ class Admin extends Controller
             return redirect()->to(base_url('login'));
         }
 
-        $request = service('request');
         $data = [
-            'name' => $request->getPost('name'),
+            'name' => esc($this->request->getPost('name')),
+            'name_numeric' => esc($this->request->getPost('name_numeric')),
+            'teacher_id' => esc($this->request->getPost('teacher_id'))
         ];
 
-        if ($this->classModel->createClassFunction($data)) {
-            session()->setFlashdata('success_message', 'Data Created Successfully');
-            return redirect()->to(base_url('admin/classes'));
-        } else {
-            session()->setFlashdata('error_message', 'There is an Error, please try again');
-            return redirect()->to(base_url('admin/classes'));
-        }
+        $this->classModel->createClassFunction($data);
+
+        $this->session->setFlashdata('success_message', 'Data Created Successfully');
+        
+        return redirect()->to(base_url('admin/classes'));
     }
 
-    public function update_class()
+    public function update_class($id)
     {
         if ($this->session->get('admin_login') != 1) {
             return redirect()->to(base_url('login'));
         }
 
-        $request = service('request');
         $data = [
-            'name' => $request->getPost('name'),
+            'name' => esc($this->request->getPost('name')),
+            'name_numeric' => esc($this->request->getPost('name_numeric')),
+            'teacher_id' => esc($this->request->getPost('teacher_id'))
         ];
 
-        if ($this->classModel->updateClassFunction($data)) {
-            session()->setFlashdata('success_message', 'Data Updated Successfully');
-            return redirect()->to(base_url('admin/classes'));
-        } else {
-            session()->setFlashdata('error_message', 'There is an Error, please try again');
-            return redirect()->to(base_url('admin/classes'));
-        }
+        $this->teacherModel->updateClassFunction($id, $data);
+
+        $this->session->setFlashdata('flash_message', 'Data Updated Successfully');
+        return redirect()->to(base_url('admin/teacher'));
     }
 
-    public function delete_class()
+    public function delete_class($id)
     {
         if ($this->session->get('admin_login') != 1) {
             return redirect()->to(base_url('login'));
         }
 
-        $request = service('request');
-        // $data = [
-        //     'name' => $request->getPost('name'),
-        // ];
+        $this->teacherModel->deleteClassFunction($id);
 
-        if ($this->classModel->deleteClassFunction()) {
-            session()->setFlashdata('success_message', 'Data Updated Successfully');
-            return redirect()->to(base_url('admin/classes'));
-        } else {
-            session()->setFlashdata('error_message', 'There is an Error, please try again');
-            return redirect()->to(base_url('admin/classes'));
-        }
+        $this->session->setFlashdata('flash_message', 'Data Deleted Successfully');
+        return redirect()->to(base_url('admin/teacher'));
     }
 
     public function manage_teacher()
@@ -235,67 +226,47 @@ class Admin extends Controller
             return redirect()->to(base_url('login'));
         }
 
-        $request = service('request');
-
         $data = [
-            'name' => esc($request->getPost('name')),
-            'email' => esc($request->getPost('email')),
-            'phone' => esc($request->getPost('phone'))
+            'name' => esc($this->request->getPost('name')),
+            'email' => esc($this->request->getPost('email')),
+            'phone' => esc($this->request->getPost('phone'))
         ];
 
-        // Handle the file upload
         $file = $this->request->getFile('userfile');
-
         $this->teacherModel->createTeacherFunction($data, $file);
-        
-        $this->session->setFlashdata('flash_message', 'Data Updated Successfully');
 
+        $this->session->setFlashdata('flash_message', 'Data Added Successfully');
         return redirect()->to(base_url('admin/teacher'));
-
     }
 
-    public function update_teacher()
+    public function update_teacher($id)
     {
         if ($this->session->get('admin_login') != 1) {
             return redirect()->to(base_url('login'));
         }
 
-        $request = service('request');
         $data = [
-            'name' => esc($request->getPost('name')),
-            'email' => esc($request->getPost('email')),
-            'photo' => esc($request->getPost('photo'))
+            'name' => esc($this->request->getPost('name')),
+            'email' => esc($this->request->getPost('email')),
+            'phone' => esc($this->request->getPost('phone'))
         ];
 
-        // Handle the file upload
         $file = $this->request->getFile('userfile');
+        $this->teacherModel->updateTeacherFunction($id, $data, $file);
 
-        if ($this->teacherModel->updateTeacherFunction($data, $file)) {
-            session()->setFlashdata('success_message', 'Data Updated Successfully');
-            return redirect()->to(base_url('admin/teacher'));
-        } else {
-            session()->setFlashdata('error_message', 'There is an Error, please try again');
-            return redirect()->to(base_url('admin/teacher'));
-        }
+        $this->session->setFlashdata('flash_message', 'Data Updated Successfully');
+        return redirect()->to(base_url('admin/teacher'));
     }
 
-    public function delete_teacher()
+    public function delete_teacher($id)
     {
         if ($this->session->get('admin_login') != 1) {
             return redirect()->to(base_url('login'));
         }
 
-        $request = service('request');
-        // $data = [
-        //     'name' => $request->getPost('name'),
-        // ];
+        $this->teacherModel->deleteTeacherFunction($id);
 
-        if ($this->teacherModel->deleteTeacherFunction()) {
-            session()->setFlashdata('success_message', 'Data Updated Successfully');
-            return redirect()->to(base_url('admin/teacher'));
-        } else {
-            session()->setFlashdata('error_message', 'There is an Error, please try again');
-            return redirect()->to(base_url('admin/teacher'));
-        }
+        $this->session->setFlashdata('flash_message', 'Data Deleted Successfully');
+        return redirect()->to(base_url('admin/teacher'));
     }
 }

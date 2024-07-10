@@ -1,35 +1,4 @@
 <!-- // * Edit Teacher Modal -->
-<!-- Teacher List View -->
-
-<div class="modal fade" id="dataModal" tabindex="-1" aria-labelledby="dataModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="dataModalLabel">Edit Data</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="dataForm">
-                    <div class="form-group">
-                        <label for="dataName">Name</label>
-                        <input type="text" class="form-control" id="dataName" name="name">
-                    </div>
-                    <div class="form-group">
-                        <label for="dataEmail">Email</label>
-                        <input type="email" class="form-control" id="dataEmail" name="email">
-                    </div>
-                    <div class="form-group">
-                        <label for="dataPhone">Phone</label>
-                        <input type="text" class="form-control" id="dataPhone" name="phone">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script>
     function showModal(data_type, id) {
@@ -37,16 +6,28 @@
             url: '<?= base_url('modal/popup/'); ?>' + data_type + '/' + id,
             type: 'GET',
             dataType: 'json',
-            success: function(response) {
+            success: function (response) {
+                $('#dataForm').attr('action', '<?= base_url('admin/teacher/update_teacher/'); ?>' + id);
                 $('#dataName').val(response.name);
                 $('#dataEmail').val(response.email);
                 $('#dataPhone').val(response.phone);
+                $('#currentImage').attr('src', '<?= base_url('uploads/teacher_image/'); ?>' + id + '.jpg');
                 $('#dataModal').modal('show');
             },
-            error: function() {
+            error: function () {
                 alert('Error loading data.');
             }
         });
+    }
+
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('newImage');
+            output.src = reader.result;
+            output.style.display = 'block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
     }
 </script>
 
@@ -55,17 +36,17 @@
     function showAjaxModal(url) {
         // Showing AJAX preloader image
         jQuery('#modal_ajax .modal-body').html('<div style="text-align:center;margin-top:200px;"><img src="<?= base_url(); ?>assets/images/preloader.gif" /></div>');
-        
+
         // Loading the AJAX modal
         jQuery('#modal_ajax').modal('show', { backdrop: 'true' });
-        
+
         // Show AJAX response on request success
         $.ajax({
             url: url,
-            success: function(response) {
+            success: function (response) {
                 jQuery('#modal_ajax .modal-body').html(response);
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
                 console.log(textStatus, errorThrown);
                 jQuery('#modal_ajax .modal-body').html(response);
             }
@@ -82,39 +63,39 @@
     </div>
 </div>
 
-    
-    
-    
-    <script type="text/javascript">
-	function confirm_modal(delete_url)
-	{
-		jQuery('#modal-4').modal('show', {backdrop: 'static'});
-		document.getElementById('delete_link').setAttribute('href' , delete_url);
-	}
-	</script>
-    
-    <!-- (Normal Modal)-->
-    <div class="modal fade" id="modal-4">
-        <div class="modal-dialog">
-            <div class="modal-content" style="margin-top:100px;">
-                
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" style="text-align:left;"><strong style="color:#FFFFFF">CONFIRMATION&nbsp;!!!</strong></h4>
-                </div>
-                
 
-                <div class="modal-footer" align="center">
-				<div class="row">
-				 <div class="col-sm-7">	
-				ARE YOU SURE YOU WANT TO DELETE THIS INFORMATION ?
-				</div>
-				 <div class="col-sm-5">	
-                    <a href="#" class="btn btn-success btn-rounded btn-sm" id="delete_link"><i class="fa fa-check">&nbsp;</i>Delete</a>
-                    <button type="button" class="btn btn-info btn-rounded btn-sm" data-dismiss="modal"><i class="fa fa-times">&nbsp;</i>Cancel</button>
-					</div>
-				</div>
-				</div>
+<script type="text/javascript">
+    function confirm_modal(delete_url) {
+        jQuery('#modal-4').modal('show', { backdrop: 'static' });
+        document.getElementById('delete_link').setAttribute('href', delete_url);
+    }
+</script>
+
+<!-- (Normal Modal)-->
+<div class="modal fade" id="modal-4">
+    <div class="modal-dialog">
+        <div class="modal-content" style="margin-top:100px;">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" style="text-align:left;"><strong
+                        style="color:#FFFFFF">CONFIRMATION&nbsp;!!!</strong></h4>
+            </div>
+
+
+            <div class="modal-footer" align="center">
+                <div class="row">
+                    <div class="col-sm-7">
+                        ARE YOU SURE YOU WANT TO DELETE THIS INFORMATION ?
+                    </div>
+                    <div class="col-sm-5">
+                        <a href="#" class="btn btn-success btn-rounded btn-sm" id="delete_link"><i
+                                class="fa fa-check">&nbsp;</i>Delete</a>
+                        <button type="button" class="btn btn-info btn-rounded btn-sm" data-dismiss="modal"><i
+                                class="fa fa-times">&nbsp;</i>Cancel</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+</div>

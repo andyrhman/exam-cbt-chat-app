@@ -16,33 +16,37 @@ class TeacherModel extends Model
 
         if ($file && $file->isValid() && !$file->hasMoved()) {
             $destination = 'uploads/teacher_image/' . $teacher_id . '.jpg';
-            // Check if the file already exists
             if (file_exists($destination)) {
-                // Delete the existing file
                 unlink($destination);
             }
-            // Move the new file to the destination
             $file->move('uploads/teacher_image/', $teacher_id . '.jpg');
         }
     }
 
-    // public function updateTeacherFunction($data, $file)
-    // {
-    //     $this->db->table($this->table)->where($this->primaryKey, $admin_id)->update($data);
+    public function updateTeacherFunction($id, $data, $file)
+    {
+        $this->update($id, $data);
 
-    //     if ($file && $file->isValid() && !$file->hasMoved()) {
-    //         $destination = 'uploads/teacher_image/' . $teacher_id . '.jpg';
-    //         // Check if the file already exists
-    //         if (file_exists($destination)) {
-    //             // Delete the existing file
-    //             unlink($destination);
-    //         }
-    //         // Move the new file to the destination
-    //         $file->move('uploads/teacher_image/', $teacher_id . '.jpg');
-    //     }
-    // }
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+            $destination = 'uploads/teacher_image/' . $id . '.jpg';
+            if (file_exists($destination)) {
+                unlink($destination);
+            }
+            $file->move('uploads/teacher_image/', $id . '.jpg');
+        }
+    }
 
-    function selectTeacher()
+    public function deleteTeacherFunction($id)
+    {
+        $this->delete($id);
+
+        $destination = 'uploads/teacher_image/' . $id . '.jpg';
+        if (file_exists($destination)) {
+            unlink($destination);
+        }
+    }
+
+    public function selectTeacher()
     {
         $query = $this->db->table('teacher')->get()->getResultArray();
         return $query;

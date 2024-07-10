@@ -19,12 +19,17 @@ $routes->post('/admin/manage_profile/update', 'Admin::update_profile');
 $routes->post('/admin/manage_profile/changePassword', 'Admin::update_password');
 $routes->post('/admin/manage_profile/register', 'Register::create');
 
+// * Class
 $routes->get('/admin/classes', 'Admin::manage_class');
+$routes->post('/admin/classes/create_class', 'Admin::create_class');
+$routes->post('/admin/classes/update_class/(:num)', 'Admin::update_class/$1');
+$routes->get('/admin/classes/delete/(:num)', 'Admin::delete_class/$1');
 
+// * Teacher
 $routes->get('/admin/teacher', 'Admin::manage_teacher');
 $routes->post('/admin/teacher/create_teacher', 'Admin::create_teacher');
-$routes->post('/admin/teacher/update_teacher', 'Admin::update_teacher');
-$routes->post('/admin/teacher/delete_teacher', 'Admin::delete_teacher');
+$routes->post('/admin/teacher/update_teacher/(:num)', 'Admin::update_teacher/$1');
+$routes->get('/admin/teacher/delete/(:num)', 'Admin::delete_teacher/$1');
 
 // * Setting
 $routes->get('/setting/system_settings', 'Setting::system_settings');

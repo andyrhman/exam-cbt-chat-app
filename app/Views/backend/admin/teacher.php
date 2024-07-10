@@ -9,19 +9,21 @@
                     <?= form_open(base_url('admin/teacher/create_teacher'), ['class' => 'form-horizontal form-groups-bordered', 'enctype' => 'multipart/form-data']); ?>
                     <div class="form-group">
                         <label for="name"><?= get_phrase("Teacher Name"); ?></label>
-                        <input type="text" class="form-control" name="name" value="">
+                        <input type="text" class="form-control" name="name" value="" required>
                     </div>
                     <div class="form-group">
                         <label for="email"><?= get_phrase("Teacher Email"); ?></label>
-                        <input type="text" class="form-control" name="email" value="">
+                        <input type="text" class="form-control" name="email" value="" required>
                     </div>
                     <div class="form-group">
                         <label for="phone"><?= get_phrase("Teacher Phone"); ?></label>
-                        <input type="text" class="form-control" name="phone" value="">
+                        <input type="text" class="form-control" name="phone" value="" required>
                     </div>
                     <div class="form-group">
                         <label for="userfile"><?= esc(get_phrase("Teacher Image")); ?></label>
-                        <input type="file" class="form-control" name="userfile" onChange="readURL(this);">
+                        <input type="file" class="form-control" name="userfile" onchange="previewImage(event);" required>
+                        <img id="newImage" src="" alt="New Image" width="100" height="100"
+                            style="display:none; margin-top: 10px;">
                     </div>
                     <button type="submit"
                         class="btn btn-success btn-rounded btn-sm btn-block"><?= get_phrase("Save"); ?></button>
@@ -72,7 +74,9 @@
                                 <td>
                                     <button class="btn btn-info btn-rounded btn-sm"
                                         onclick="showModal('teacher', <?= $teacher['teacher_id']; ?>)">Edit</button>
-                                    <button class="btn btn-danger btn-rounded btn-sm"><?= get_phrase("Delete"); ?></button>
+                                    <button class="btn btn-danger btn-rounded btn-sm"
+                                        onclick="confirm_modal('<?= base_url('admin/teacher/delete/' . $teacher['teacher_id']); ?>')">Delete</button>
+
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -85,3 +89,5 @@
         </div>
     </div>
 </div>
+
+<?php include "edit_teacher.php"; ?>
