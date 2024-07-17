@@ -8,6 +8,7 @@ use App\Models\AdminModel;
 use App\Models\CrudModel;
 use App\Models\ClassModel;
 use App\Models\TeacherModel;
+use App\Models\SectionModel;
 
 class Admin extends Controller
 {
@@ -18,6 +19,7 @@ class Admin extends Controller
     protected $crudModel;
     protected $classModel;
     protected $teacherModel;
+    protected $sectionModel;
 
 
     public function __construct()
@@ -26,6 +28,7 @@ class Admin extends Controller
         $this->adminModel = new AdminModel();
         $this->classModel = new ClassModel();
         $this->teacherModel = new TeacherModel();
+        $this->sectionModel = new SectionModel();
         $this->request = service('request');
         $this->db = Config::connect();
         $this->session = session();
@@ -163,7 +166,7 @@ class Admin extends Controller
         $this->classModel->createClassFunction($data);
 
         $this->session->setFlashdata('success_message', 'Data Created Successfully');
-        
+
         return redirect()->to(base_url('admin/classes'));
     }
 
@@ -220,18 +223,6 @@ class Admin extends Controller
         return view('backend/index', $data);
     }
 
-    public function get_all_teachers()
-    {
-        if ($this->session->get('admin_login') != 1) {
-            return redirect()->to(base_url('login'));
-        }
-
-        $teachers = $this->teacherModel->findAll();
-    
-        return $this->response->setJSON($teachers);
-    }
-    
-
     public function create_teacher()
     {
         if ($this->session->get('admin_login') != 1) {
@@ -281,4 +272,98 @@ class Admin extends Controller
         $this->session->setFlashdata('flash_message', 'Data Deleted Successfully');
         return redirect()->to(base_url('admin/teacher'));
     }
+
+    public function manage_section()
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $query = $this->db->table('settings')->getWhere(['type' => 'system_title'])->getRow();
+
+        $system_title = $query->description;
+        $sections = $this->sectionModel->selectSection();
+
+        $data = [
+            'page_name' => 'section',
+            'page_title' => get_phrase('Manage Section'), // You can replace this with the get_phrase() equivalent if necessary
+            'system_title' => $system_title,
+            'sections' => $sections
+        ];
+
+        return view('backend/index', $data);
+    }
+
+    public function create_section()
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $data = [
+            'name' => esc($this->request->getPost('name')),
+            'name_numeric' => esc($this->request->getPost('name_numeric')),
+            'class_id' => esc($this->request->getPost('class_id')),
+            'teacher_id' => esc($this->request->getPost('teacher_id'))
+        ];
+
+        $this->sectionModel->createSectionFunction($data);
+
+        $this->session->setFlashdata('flash_message', 'Data Added Successfully');
+        return redirect()->to(base_url('admin/section'));
+    }
+
+    public function update_section($id)
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $data = [
+            'name' => esc($this->request->getPost('name')),
+            'name_numeric' => esc($this->request->getPost('name_numeric')),
+            'class_id' => esc($this->request->getPost('class_id')),
+            'teacher_id' => esc($this->request->getPost('teacher_id'))
+        ];
+
+        $this->sectionModel->updateSectionFunction($id, $data);
+
+        $this->session->setFlashdata('flash_message', 'Data Updated Successfully');
+        return redirect()->to(base_url('admin/section'));
+    }
+
+    public function delete_selection($id)
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $this->sectionModel->deleteSectionFunction($id);
+
+        $this->session->setFlashdata('flash_message', 'Data Deleted Successfully');
+        return redirect()->to(base_url('admin/section'));
+    }
+
+    public function get_all_teachers()
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $teachers = $this->teacherModel->findAll();
+
+        return $this->response->setJSON($teachers);
+    }
+
+    public function get_all_classes()
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $classes = $this->classModel->findAll();
+
+        return $this->response->setJSON($classes);
+    }
+
 }
