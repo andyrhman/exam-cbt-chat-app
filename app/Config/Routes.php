@@ -22,6 +22,7 @@ $routes->post('/admin/manage_profile/register', 'Register::create');
 // * Class
 $routes->get('/admin/classes', 'Admin::manage_class');
 $routes->post('/admin/classes/create_class', 'Admin::create_class');
+$routes->get('/admin/classes/get_all_teachers', 'Admin::get_all_teachers');
 $routes->post('/admin/classes/update_class/(:num)', 'Admin::update_class/$1');
 $routes->get('/admin/classes/delete/(:num)', 'Admin::delete_class/$1');
 

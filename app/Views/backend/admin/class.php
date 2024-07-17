@@ -1,5 +1,4 @@
-<!-- Teacher List View -->
-
+<?php use CodeIgniter\Database\Config; ?>
 
 <div class="row">
     <div class="col-md-5">
@@ -64,10 +63,14 @@
                             <tr>
                                 <td><?= $class['name']; ?></td>
                                 <td><?= $class['name_numeric']; ?></td>
-                                <td>   
+                                <td>
                                     <?php
-                                        $crudModel = new \App\Models\CrudModel();
-                                        echo $crudModel->get_type_name_by_id('teacher', $class['teacher_id'])
+                                    $crudModel = new \App\Models\CrudModel();
+                                    echo $crudModel->get_type_name_by_id('teacher', $class['teacher_id']);
+
+                                    // * Alternative
+                                    // ? $db = Config::connect();
+                                    // ? echo $db->table('teacher')->getWhere(['teacher_id' => $class['teacher_id']])->getRow()->name;
                                     ?>
                                 </td>
                                 <td>
@@ -75,18 +78,14 @@
                                         onclick="showModal('class', <?= $class['class_id']; ?>)">Edit</button>
                                     <button class="btn btn-danger btn-rounded btn-sm"
                                         onclick="confirm_modal('<?= base_url('admin/classes/delete/' . $class['class_id']); ?>')">Delete</button>
-
                                 </td>
                             </tr>
                         <?php endforeach; ?>
-
-
                     </tbody>
                 </table>
-
             </div>
         </div>
     </div>
 </div>
 
-<?php include "edit_teacher.php"; ?>
+<?php include "edit_class.php"; ?>

@@ -179,10 +179,10 @@ class Admin extends Controller
             'teacher_id' => esc($this->request->getPost('teacher_id'))
         ];
 
-        $this->teacherModel->updateClassFunction($id, $data);
+        $this->classModel->updateClassFunction($id, $data);
 
         $this->session->setFlashdata('flash_message', 'Data Updated Successfully');
-        return redirect()->to(base_url('admin/teacher'));
+        return redirect()->to(base_url('admin/classes'));
     }
 
     public function delete_class($id)
@@ -191,10 +191,10 @@ class Admin extends Controller
             return redirect()->to(base_url('login'));
         }
 
-        $this->teacherModel->deleteClassFunction($id);
+        $this->classModel->deleteClassFunction($id);
 
         $this->session->setFlashdata('flash_message', 'Data Deleted Successfully');
-        return redirect()->to(base_url('admin/teacher'));
+        return redirect()->to(base_url('admin/classes'));
     }
 
     public function manage_teacher()
@@ -219,6 +219,18 @@ class Admin extends Controller
 
         return view('backend/index', $data);
     }
+
+    public function get_all_teachers()
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $teachers = $this->teacherModel->findAll();
+    
+        return $this->response->setJSON($teachers);
+    }
+    
 
     public function create_teacher()
     {

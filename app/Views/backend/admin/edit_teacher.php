@@ -38,3 +38,34 @@
         </div>
     </div>
 </div>
+
+<script>
+    function showModal(data_type, id) {
+        $.ajax({
+            url: '<?= base_url('modal/popup/'); ?>' + data_type + '/' + id,
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                $('#dataForm').attr('action', '<?= base_url('admin/teacher/update_teacher/'); ?>' + id);
+                $('#dataName').val(response.name);
+                $('#dataEmail').val(response.email);
+                $('#dataPhone').val(response.phone);
+                $('#currentImage').attr('src', '<?= base_url('uploads/teacher_image/'); ?>' + id + '.jpg');
+                $('#dataModal').modal('show');
+            },
+            error: function () {
+                alert('Error loading data.');
+            }
+        });
+    }
+
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('newImage');
+            output.src = reader.result;
+            output.style.display = 'block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>

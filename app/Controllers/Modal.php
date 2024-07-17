@@ -22,12 +22,12 @@ class Modal extends Controller
             case 'teacher':
                 $model = new \App\Models\TeacherModel();
                 break;
+            case 'class':
+                $model = new \App\Models\ClassModel();
+                break;
             // Add more cases for different data types as needed
             // case 'student':
             //     $model = new \App\Models\StudentModel();
-            //     break;
-            // case 'class':
-            //     $model = new \App\Models\ClassModel();
             //     break;
         }
 
