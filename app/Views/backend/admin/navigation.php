@@ -44,7 +44,7 @@
             </li>  
 
             <li class="<?php if ($page_name == 'subject')
-                echo 'active'; ?>"> <a href="<?= base_url('subject/manage_subject'); ?>" class="waves-effect"><i
+                echo 'active'; ?>"> <a href="<?= base_url('admin/subject'); ?>" class="waves-effect"><i
                         class="fa fa-plus p-r-10"></i>
                     <span class="hide-menu"><?= get_phrase("Manage Subject"); ?></span></a> </li>
 
@@ -57,14 +57,10 @@
                         class="hide-menu"> <?= get_phrase("Manage Student"); ?> <span
                             class="fa arrow"></span></span></a>
                 <ul class="nav nav-second-level">
-                    <li <?php if ($page_name == 'new_student')
+                    <li <?php if ($page_name == 'student')
                         echo 'active'; ?>> <a
-                            href="<?= base_url('student/new_student'); ?>"><?= get_phrase('New Student') ?></a>
+                            href="<?= base_url('admin/student'); ?>"><?= get_phrase('New Student') ?></a>
                     </li>
-                    <li <?php if ($page_name == 'list_student')
-                        echo 'active'; ?>> <a
-                            href="<?= base_url('student/list_student'); ?>"><?= get_phrase('List Student') ?></a>
-
                 </ul>
             </li>
 

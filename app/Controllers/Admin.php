@@ -9,6 +9,7 @@ use App\Models\CrudModel;
 use App\Models\ClassModel;
 use App\Models\TeacherModel;
 use App\Models\SectionModel;
+use App\Models\SubjectModel;
 
 class Admin extends Controller
 {
@@ -20,6 +21,7 @@ class Admin extends Controller
     protected $classModel;
     protected $teacherModel;
     protected $sectionModel;
+    protected $subjectModel;
 
 
     public function __construct()
@@ -29,6 +31,7 @@ class Admin extends Controller
         $this->classModel = new ClassModel();
         $this->teacherModel = new TeacherModel();
         $this->sectionModel = new SectionModel();
+        $this->subjectModel = new SubjectModel();
         $this->request = service('request');
         $this->db = Config::connect();
         $this->session = session();
@@ -344,6 +347,75 @@ class Admin extends Controller
         return redirect()->to(base_url('admin/section'));
     }
 
+    public function manage_subject()
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $query = $this->db->table('settings')->getWhere(['type' => 'system_title'])->getRow();
+
+        $system_title = $query->description;
+        $subjects = $this->subjectModel->selectSubject();
+
+        $data = [
+            'page_name' => 'subject',
+            'page_title' => get_phrase('Manage Subject'), // You can replace this with the get_phrase() equivalent if necessary
+            'system_title' => $system_title,
+            'subjects' => $subjects
+        ];
+
+        return view('backend/index', $data);
+    }
+
+    public function create_subject()
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $data = [
+            'name' => esc($this->request->getPost('name')),
+            'class_id' => esc($this->request->getPost('class_id')),
+            'teacher_id' => esc($this->request->getPost('teacher_id'))
+        ];
+
+        $this->subjectModel->createSubjectFunction($data);
+
+        $this->session->setFlashdata('flash_message', 'Data Added Successfully');
+        return redirect()->to(base_url('admin/subject'));
+    }
+
+    public function update_subject($id)
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $data = [
+            'name' => esc($this->request->getPost('name')),
+            'class_id' => esc($this->request->getPost('class_id')),
+            'teacher_id' => esc($this->request->getPost('teacher_id'))
+        ];
+
+        $this->subjectModel->updateSubjectFunction($id, $data);
+
+        $this->session->setFlashdata('flash_message', 'Data Updated Successfully');
+        return redirect()->to(base_url('admin/subject'));
+    }
+
+    public function delete_subject($id)
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $this->subjectModel->deleteSubjectFunction($id);
+
+        $this->session->setFlashdata('flash_message', 'Data Deleted Successfully');
+        return redirect()->to(base_url('admin/subject'));
+    }
+
     public function get_all_teachers()
     {
         if ($this->session->get('admin_login') != 1) {
@@ -365,5 +437,4 @@ class Admin extends Controller
 
         return $this->response->setJSON($classes);
     }
-
 }

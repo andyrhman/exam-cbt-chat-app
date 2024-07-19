@@ -37,6 +37,12 @@ $routes->post('/admin/teacher/create_teacher', 'Admin::create_teacher');
 $routes->post('/admin/teacher/update_teacher/(:num)', 'Admin::update_teacher/$1');
 $routes->get('/admin/teacher/delete/(:num)', 'Admin::delete_teacher/$1');
 
+// * Subject
+$routes->get('/admin/subject', 'Admin::manage_subject');
+$routes->post('/admin/subject/create_subject', 'Admin::create_subject');
+$routes->post('/admin/subject/update_subject/(:num)', 'Admin::update_subject/$1');
+$routes->get('/admin/subject/delete/(:num)', 'Admin::delete_subject/$1');
+
 // * Settings
 $routes->get('/setting/system_settings', 'Setting::system_settings');
 $routes->post('/setting/system_settings/update', 'Setting::update_settings');

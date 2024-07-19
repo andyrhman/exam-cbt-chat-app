@@ -10,12 +10,8 @@
             <div class="modal-body">
                 <form id="dataForm" method="post">
                     <div class="form-group">
-                        <label for="dataName"><?= get_phrase("Section Name"); ?></label>
+                        <label for="dataName"><?= get_phrase("Subject Name"); ?></label>
                         <input type="text" class="form-control" id="dataName" name="name">
-                    </div>
-                    <div class="form-group">
-                        <label for="dataNickName"><?= get_phrase("Nick Name"); ?></label>
-                        <input type="text" class="form-control" id="dataNickName" name="name_numeric">
                     </div>
                     <div class="form-group">
                         <label for="dataTeacher"><?= get_phrase("Teacher"); ?></label>
@@ -43,9 +39,8 @@
             type: 'GET',
             dataType: 'json',
             success: function (response) {
-                $('#dataForm').attr('action', '<?= base_url('admin/section/update_section/'); ?>' + id);
+                $('#dataForm').attr('action', '<?= base_url('admin/subject/update_subject/'); ?>' + id);
                 $('#dataName').val(response.name);
-                $('#dataNickName').val(response.name_numeric);
 
                 // * Teacher Data
                 // Clear existing options in the select element
