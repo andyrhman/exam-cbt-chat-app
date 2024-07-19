@@ -6,12 +6,32 @@
         $('#' + id).show();
         return;
     }
+    
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function() {
+            var output = document.getElementById('newImage');
+            output.src = reader.result;
+            output.style.display = 'block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    function previewImageEdit(event) {
+        var reader = new FileReader();
+        reader.onload = function() {
+            var output = document.getElementById('newImageEdit');
+            output.src = reader.result;
+            output.style.display = 'block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
 </script>
 
 
-<?php if ((session()->getFlashdata('error_message')) != ""): ?>
+<?php if ((session()->getFlashdata('error_message')) != "") : ?>
     <script type="text/javascript">
-        $(document).ready(function () {
+        $(document).ready(function() {
             $.toast({
 
                 text: '<?php echo session()->getFlashdata('error_message'); ?>',
@@ -30,7 +50,7 @@
         if (input.files && input.files[0]) {
             var reader = new FileReader();
 
-            reader.onload = function (e) {
+            reader.onload = function(e) {
                 $('#blah').attr('src', e.target.result);
                 $('#blah').show(); // Show the image box
             }
@@ -55,7 +75,7 @@
         if (input.files && input.files[0]) {
             var reader = new FileReader();
 
-            reader.onload = function (e) {
+            reader.onload = function(e) {
                 $('#blah').attr('src', e.target.result);
                 $('#blah').show(); // Show the image box
             }
@@ -80,7 +100,7 @@
         if (input.files && input.files[0]) {
             var reader = new FileReader();
 
-            reader.onload = function (e) {
+            reader.onload = function(e) {
                 document.getElementById('blahblah').src = e.target.result;
                 document.getElementById('blahblah').style.display = 'block'; // Show the image box
             }
@@ -104,18 +124,18 @@
 
 
 <!-- jQuery -->
-<script src="<?php echo base_url(); ?>optimum/plugins/bower_components/jquery/dist/jquery.min.js"></>
-<script src="<?php echo base_url(); ?>optimum/js/fullcalendar/fullcalendar.min.js"></script>
+<script src="<?php echo base_url(); ?>optimum/plugins/bower_components/jquery/dist/jquery.min.js">
+    < /> <
+    script src = "<?php echo base_url(); ?>optimum/js/fullcalendar/fullcalendar.min.js" >
+</script>
 <script src="<?php echo base_url(); ?>optimum/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js"></script>
 
 <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/dropzone-master/dist/dropzone.js"></script>
 
 
 <!-- Magnific popup JavaScript -->
-<script
-    src="<?php echo base_url(); ?>optimum/plugins/bower_components/Magnific-Popup-master/dist/jquery.magnific-popup.min.js"></script>
-<script
-    src="<?php echo base_url(); ?>optimum/plugins/bower_components/Magnific-Popup-master/dist/jquery.magnific-popup-init.js"></script>
+<script src="<?php echo base_url(); ?>optimum/plugins/bower_components/Magnific-Popup-master/dist/jquery.magnific-popup.min.js"></script>
+<script src="<?php echo base_url(); ?>optimum/plugins/bower_components/Magnific-Popup-master/dist/jquery.magnific-popup-init.js"></script>
 <!--Wave Effects -->
 <script src="<?php echo base_url(); ?>optimum/js/waves.js"></script>
 
@@ -124,8 +144,7 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="<?php echo base_url(); ?>optimum/bootstrap/dist/js/tether.min.js"></script>
 <script src="<?php echo base_url(); ?>optimum/bootstrap/dist/js/bootstrap.min.js"></script>
-<script
-    src="<?php echo base_url(); ?>optimum/plugins/bower_components/bootstrap-extension/js/bootstrap-extension.min.js"></script>
+<script src="<?php echo base_url(); ?>optimum/plugins/bower_components/bootstrap-extension/js/bootstrap-extension.min.js"></script>
 <!-- Menu Plugin JavaScript -->
 <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
 <!--slimscroll JavaScript -->
@@ -137,7 +156,6 @@
     $('.slimscrollsidebar').slimScroll({
         height: '100%'
     });
-
 </script>
 <!--Wave Effects -->
 <script src="<?php echo base_url(); ?>optimum/js/waves.js"></script>
@@ -145,8 +163,7 @@
 <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/raphael/raphael-min.js"></script>
 <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/morrisjs/morris.js"></script>
 <!-- Sparkline chart JavaScript -->
-<script
-    src="<?php echo base_url(); ?>optimum/plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
+<script src="<?php echo base_url(); ?>optimum/plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
 <!-- jQuery peity -->
 <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/peity/jquery.peity.min.js"></script>
 <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/peity/jquery.peity.init.js"></script>
@@ -165,19 +182,12 @@
 <script src="<?php echo base_url(); ?>optimum/js/validator.js"></script>
 
 <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/switchery/dist/switchery.min.js"></script>
-<script src="<?php echo base_url(); ?>optimum/plugins/bower_components/custom-select/custom-select.min.js"
-    type="text/javascript"></script>
-<script src="<?php echo base_url(); ?>optimum/plugins/bower_components/bootstrap-select/bootstrap-select.min.js"
-    type="text/javascript"></script>
-<script
-    src="<?php echo base_url(); ?>optimum/plugins/bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
-<script
-    src="<?php echo base_url(); ?>optimum/plugins/bower_components/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"
-    type="text/javascript"></script>
-<script type="text/javascript"
-    src="<?php echo base_url(); ?>optimum/plugins/bower_components/multiselect/js/jquery.multi-select.js"></script>
-<link rel="stylesheet"
-    href="<?php echo base_url(); ?>optimum/plugins/bower_components/bootstrap-rtl-master/dist/js/bootstrap-rtl.min.js">
+<script src="<?php echo base_url(); ?>optimum/plugins/bower_components/custom-select/custom-select.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>optimum/plugins/bower_components/bootstrap-select/bootstrap-select.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>optimum/plugins/bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+<script src="<?php echo base_url(); ?>optimum/plugins/bower_components/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>optimum/plugins/bower_components/multiselect/js/jquery.multi-select.js"></script>
+<link rel="stylesheet" href="<?php echo base_url(); ?>optimum/plugins/bower_components/bootstrap-rtl-master/dist/js/bootstrap-rtl.min.js">
 
 <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/datatables/jquery.dataTables.min.js"></script>
 <!-- start - This is for export functionality only -->
@@ -192,8 +202,7 @@
 <!-- icheck -->
 <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/icheck/icheck.min.js"></script>
 <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/icheck/icheck.init.js"></script>
-<script
-    src="<?php echo base_url(); ?>optimum/plugins/bower_components/clockpicker/dist/jquery-clockpicker.min.js"></script>
+<script src="<?php echo base_url(); ?>optimum/plugins/bower_components/clockpicker/dist/jquery-clockpicker.min.js"></script>
 
 <script src="<?php echo base_url(); ?>optimum/js/materialize.min.js"></script>
 <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/dropify/dist/js/dropify.min.js"></script>
@@ -201,24 +210,21 @@
 
 <!--Wave Effects -->
 <script src="js/waves.js"></script>
-<script type="text/javascript"
-    src="<?php echo base_url(); ?>optimum/plugins/bower_components/gallery/js/animated-masonry-gallery.js"></script>
-<script type="text/javascript"
-    src="<?php echo base_url(); ?>optimum/plugins/bower_components/gallery/js/jquery.isotope.min.js"></script>
-<script type="text/javascript"
-    src="<?php echo base_url(); ?>optimum/plugins/bower_components/fancybox/ekko-lightbox.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>optimum/plugins/bower_components/gallery/js/animated-masonry-gallery.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>optimum/plugins/bower_components/gallery/js/jquery.isotope.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>optimum/plugins/bower_components/fancybox/ekko-lightbox.min.js"></script>
 <script type="text/javascript">
-    $(document).ready(function ($) {
+    $(document).ready(function($) {
         // delegate calls to data-toggle="lightbox"
-        $(document).delegate('*[data-toggle="lightbox"]:not([data-gallery="navigateTo"])', 'click', function (event) {
+        $(document).delegate('*[data-toggle="lightbox"]:not([data-gallery="navigateTo"])', 'click', function(event) {
             event.preventDefault();
             return $(this).ekkoLightbox({
-                onShown: function () {
+                onShown: function() {
                     if (window.console) {
                         return console.log('Checking our the events huh?');
                     }
                 },
-                onNavigate: function (direction, itemIndex) {
+                onNavigate: function(direction, itemIndex) {
                     if (window.console) {
                         return console.log('Navigating ' + direction + '. Current item: ' + itemIndex);
                     }
@@ -227,26 +233,26 @@
         });
 
         //Programatically call
-        $('#open-image').click(function (e) {
+        $('#open-image').click(function(e) {
             e.preventDefault();
             $(this).ekkoLightbox();
         });
-        $('#open-youtube').click(function (e) {
+        $('#open-youtube').click(function(e) {
             e.preventDefault();
             $(this).ekkoLightbox();
         });
 
         // navigateTo
-        $(document).delegate('*[data-gallery="navigateTo"]', 'click', function (event) {
+        $(document).delegate('*[data-gallery="navigateTo"]', 'click', function(event) {
             event.preventDefault();
 
             var lb;
             return $(this).ekkoLightbox({
-                onShown: function () {
+                onShown: function() {
 
                     lb = this;
 
-                    $(lb.modal_content).on('click', '.modal-footer a', function (e) {
+                    $(lb.modal_content).on('click', '.modal-footer a', function(e) {
 
                         e.preventDefault();
                         lb.navigateTo(2);
@@ -283,8 +289,8 @@
 
 
 <script>
-    $(document).ready(function () {
-        $("#print").click(function () {
+    $(document).ready(function() {
+        $("#print").click(function() {
             var mode = 'iframe'; //popup
             var close = mode == "popup";
             var options = {
@@ -303,9 +309,9 @@
 <!--<script src="assets/js/neon-calendar.js"></script>-->
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         $('#myTable').DataTable();
-        $(document).ready(function () {
+        $(document).ready(function() {
             var table = $('#example').DataTable({
                 "columnDefs": [{
                     "visible": false,
@@ -315,7 +321,7 @@
                     [2, 'asc']
                 ],
                 "displayLength": 25,
-                "drawCallback": function (settings) {
+                "drawCallback": function(settings) {
                     var api = this.api();
                     var rows = api.rows({
                         page: 'current'
@@ -324,7 +330,7 @@
 
                     api.column(2, {
                         page: 'current'
-                    }).data().each(function (group, i) {
+                    }).data().each(function(group, i) {
                         if (last !== group) {
                             $(rows).eq(i).before(
                                 '<tr class="group"><td colspan="5">' + group + '</td></tr>'
@@ -337,7 +343,7 @@
             });
 
             // Order by the grouping
-            $('#example tbody').on('click', 'tr.group', function () {
+            $('#example tbody').on('click', 'tr.group', function() {
                 var currentOrder = table.order()[0];
                 if (currentOrder[0] === 2 && currentOrder[1] === 'asc') {
                     table.order([2, 'desc']).draw();
@@ -357,7 +363,7 @@
 
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
 
         $('.textarea_editor').wysihtml5();
 
@@ -378,7 +384,7 @@
 </script>
 <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/tinymce/tinymce.min.js"></script>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
 
         if ($("#mymce").length > 0) {
             tinymce.init({
@@ -400,7 +406,7 @@
 <script type="text/javascript">
     //Alerts
 
-    $(".myadmin-alert .closed").click(function (event) {
+    $(".myadmin-alert .closed").click(function(event) {
         $(this).parents(".myadmin-alert").fadeToggle(350);
 
         return false;
@@ -408,16 +414,16 @@
 
     /* Click to close */
 
-    $(".myadmin-alert-click").click(function (event) {
+    $(".myadmin-alert-click").click(function(event) {
         $(this).fadeToggle(350);
 
         return false;
     });
 
-    $(".showtop").click(function () {
+    $(".showtop").click(function() {
         $(".alerttop").fadeToggle(350);
     });
-    $(".showtop2").click(function () {
+    $(".showtop2").click(function() {
         $(".alerttop2").fadeToggle(350);
     });
 </script>
@@ -432,14 +438,14 @@
     });
 
     $('.clockpicker').clockpicker({
-        donetext: 'Done',
+            donetext: 'Done',
 
-    })
-        .find('input').change(function () {
+        })
+        .find('input').change(function() {
             console.log(this.value);
         });
 
-    $('#check-minutes').click(function (e) {
+    $('#check-minutes').click(function(e) {
         // Have to stop propagation here
         e.stopPropagation();
         input.clockpicker('show')
@@ -503,9 +509,9 @@
 </script>
 
 <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/toast-master/js/jquery.toast.js"></script>
-<?php if ((session()->getFlashdata('flash_message')) != ""): ?>
+<?php if ((session()->getFlashdata('flash_message')) != "") : ?>
     <script type="text/javascript">
-        $(document).ready(function () {
+        $(document).ready(function() {
             $.toast({
                 heading: 'Congratulations!!!',
                 text: '<?= session()->getFlashdata('flash_message'); ?>',
@@ -524,10 +530,10 @@
 
 <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/switchery/dist/switchery.min.js"></script>
 <script>
-    jQuery(document).ready(function () {
+    jQuery(document).ready(function() {
         // Switchery
         var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
-        $('.js-switch').each(function () {
+        $('.js-switch').each(function() {
             new Switchery($(this)[0], $(this).data());
 
         });
@@ -584,19 +590,19 @@
         });
 
         $('#public-methods').multiSelect();
-        $('#select-all').click(function () {
+        $('#select-all').click(function() {
             $('#public-methods').multiSelect('select_all');
             return false;
         });
-        $('#deselect-all').click(function () {
+        $('#deselect-all').click(function() {
             $('#public-methods').multiSelect('deselect_all');
             return false;
         });
-        $('#refresh').on('click', function () {
+        $('#refresh').on('click', function() {
             $('#public-methods').multiSelect('refresh');
             return false;
         });
-        $('#add-option').on('click', function () {
+        $('#add-option').on('click', function() {
             $('#public-methods').multiSelect('addOption', {
                 value: 42,
                 text: 'test 42',
@@ -612,10 +618,8 @@
 
 <script type="text/javascript" src="<?php echo base_url(); ?>optimum/date/daterangepicker.min.js"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>optimum/date/daterangepicker.css" />
-<script
-    src="<?php echo base_url(); ?>optimum/plugins/bower_components/Magnific-Popup-master/dist/jquery.magnific-popup.min.js"></script>
-<script
-    src="<?php echo base_url(); ?>optimum/plugins/bower_components/Magnific-Popup-master/dist/jquery.magnific-popup-init.js"></script>
+<script src="<?php echo base_url(); ?>optimum/plugins/bower_components/Magnific-Popup-master/dist/jquery.magnific-popup.min.js"></script>
+<script src="<?php echo base_url(); ?>optimum/plugins/bower_components/Magnific-Popup-master/dist/jquery.magnific-popup-init.js"></script>
 
 
 <script src="<?php echo base_url(); ?>js/meteorEmoji.min.js"></script>
@@ -641,15 +645,15 @@
     var soundNb = 0; // counter
 
     $('.btn2').click(() => audio2[soundNb++ % audio2.length].play());
-
 </script>
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        $('.set_langs').on('click', function () {
+    $(document).ready(function() {
+        $('.set_langs').on('click', function() {
             var lang_url = $(this).data('href');
             $.ajax({
-                url: lang_url, success: function (result) {
+                url: lang_url,
+                success: function(result) {
                     location.reload();
                 }
             });
@@ -661,7 +665,7 @@
 
 <!-- jQuery file upload -->
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         // Basic
         $('.dropify').dropify();
 
@@ -678,21 +682,21 @@
         // Used events
         var drEvent = $('#input-file-events').dropify();
 
-        drEvent.on('dropify.beforeClear', function (event, element) {
+        drEvent.on('dropify.beforeClear', function(event, element) {
             return confirm("Do you really want to delete \"" + element.file.name + "\" ?");
         });
 
-        drEvent.on('dropify.afterClear', function (event, element) {
+        drEvent.on('dropify.afterClear', function(event, element) {
             alert('File deleted');
         });
 
-        drEvent.on('dropify.errors', function (event, element) {
+        drEvent.on('dropify.errors', function(event, element) {
             console.log('Has Errors');
         });
 
         var drDestroy = $('#input-file-to-destroy').dropify();
         drDestroy = drDestroy.data('dropify')
-        $('#toggleDropify').on('click', function (e) {
+        $('#toggleDropify').on('click', function(e) {
             e.preventDefault();
             if (drDestroy.isDropified()) {
                 drDestroy.destroy();
@@ -707,12 +711,12 @@
 <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/blockUI/jquery.blockUI.js"></script>
 <script type="application/javascript">
     // This is for BlockUI plugin demo
-    $('#blockbtn1').click(function () {
+    $('#blockbtn1').click(function() {
         $('div.block1').block({
             message: null
         });
     });
-    $('#blockbtn2').click(function () {
+    $('#blockbtn2').click(function() {
         $('div.block2').block({
             message: '<h3>Please Wait...</h3>',
             css: {
@@ -720,7 +724,7 @@
             }
         });
     });
-    $('#blockbtn3').click(function () {
+    $('#blockbtn3').click(function() {
         $('div.block3').block({
             message: '<h3>Please Wait...</h3>',
             overlayCSS: {
@@ -731,7 +735,7 @@
             }
         });
     });
-    $('#blockbtn4').click(function () {
+    $('#blockbtn4').click(function() {
         $('div.block4').block({
             message: '<p style="margin:0;padding:8px;font-size:24px;">Just a moment...</p>',
             css: {
@@ -741,7 +745,7 @@
             }
         });
     });
-    $('#blockbtn5').click(function () {
+    $('#blockbtn5').click(function() {
         $('div.block5').block({
             message: '<h4><img src="<?php echo base_url(); ?>optimum/plugins/images/busy.gif" /> Just a moment...</h4>',
             css: {
@@ -749,7 +753,7 @@
             }
         });
     });
-    $('#blockbtn6').click(function () {
+    $('#blockbtn6').click(function() {
         $('div.block6').block({
             message: $('#domMessage'),
             css: {
@@ -757,22 +761,22 @@
             }
         });
     });
-    $('#unblockbtn1').click(function () {
+    $('#unblockbtn1').click(function() {
         $('div.block1').unblock();
     });
-    $('#unblockbtn2').click(function () {
+    $('#unblockbtn2').click(function() {
         $('div.block2').unblock();
     });
-    $('#unblockbtn3').click(function () {
+    $('#unblockbtn3').click(function() {
         $('div.block3').unblock();
     });
-    $('#unblockbtn4').click(function () {
+    $('#unblockbtn4').click(function() {
         $('div.block4').unblock();
     });
-    $('#unblockbtn5').click(function () {
+    $('#unblockbtn5').click(function() {
         $('div.block5').unblock();
     });
-    $('#unblockbtn6').click(function () {
+    $('#unblockbtn6').click(function() {
         $('div.block6').unblock();
     });
 </script>
@@ -804,7 +808,7 @@
             ampm = " AM "
         }
         document.getElementById('time').innerHTML = h + ":" + m + ":" + s + ampm;
-        t = setTimeout(function () {
+        t = setTimeout(function() {
             startTime()
         }, 500);
     }
@@ -815,14 +819,15 @@
 <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/owl.carousel/owl.carousel.min.js"></script>
 <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/owl.carousel/owl.custom.js"></script>
 
-<script src="<?php echo base_url('js/font-awesome-icon-picker/fontawesome-four-iconpicker.min.js'); ?>"
-    charset="utf-8"></script>
+<script src="<?php echo base_url('js/font-awesome-icon-picker/fontawesome-four-iconpicker.min.js'); ?>" charset="utf-8"></script>
 
 <script>
-    $(document).ready(function () {
-        $(".html5editor").each(function () { $(this).wysihtml5(); });
+    $(document).ready(function() {
+        $(".html5editor").each(function() {
+            $(this).wysihtml5();
+        });
     });
-    $(function () {
+    $(function() {
         $('.icon-picker').iconpicker();
     });
 </script>

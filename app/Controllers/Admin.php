@@ -9,6 +9,7 @@ use App\Models\CrudModel;
 use App\Models\ClassModel;
 use App\Models\TeacherModel;
 use App\Models\SectionModel;
+use App\Models\StudentModel;
 use App\Models\SubjectModel;
 
 class Admin extends Controller
@@ -22,6 +23,7 @@ class Admin extends Controller
     protected $teacherModel;
     protected $sectionModel;
     protected $subjectModel;
+    protected $studentModel;
 
 
     public function __construct()
@@ -32,6 +34,7 @@ class Admin extends Controller
         $this->teacherModel = new TeacherModel();
         $this->sectionModel = new SectionModel();
         $this->subjectModel = new SubjectModel();
+        $this->studentModel = new StudentModel();
         $this->request = service('request');
         $this->db = Config::connect();
         $this->session = session();
@@ -416,6 +419,89 @@ class Admin extends Controller
         return redirect()->to(base_url('admin/subject'));
     }
 
+    public function manage_student()
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $query = $this->db->table('settings')->getWhere(['type' => 'system_title'])->getRow();
+
+        $system_title = $query->description;
+
+        $studentModel = new StudentModel();
+        $students = $studentModel->selectStudent();
+
+        $data = [
+            'page_name' => 'student',
+            'page_title' => get_phrase('Manage Student'), // You can replace this with the get_phrase() equivalent if necessary
+            'system_title' => $system_title,
+            'students' => $students
+        ];
+
+        return view('backend/index', $data);
+    }
+
+    public function create_student()
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+        $request = service('request');
+
+        $data = [
+            'name' => esc($request->getPost('name')),
+            'email' => esc($request->getPost('email')),
+            'phone' => esc($request->getPost('phone')),
+            'sex' => esc($request->getPost('sex')),
+            'class_id' => esc($request->getPost('class_id')),
+            'section_id' => esc($request->getPost('section_id')),
+            'address' => esc($request->getPost('address')),
+            'password' => password_hash($request->getPost('password'), PASSWORD_ARGON2ID)
+        ];
+
+        $file = $this->request->getFile('userfile');
+        $this->studentModel->createStudentFunction($data, $file);
+
+        $this->session->setFlashdata('flash_message', 'Data Added Successfully');
+        return redirect()->to(base_url('admin/student'));
+    }
+
+    public function update_student($id)
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $data = [
+            'name' => esc($this->request->getPost('name')),
+            'email' => esc($this->request->getPost('email')),
+            'phone' => esc($this->request->getPost('phone')),
+            'sex' => esc($this->request->getPost('sex')),
+            'class_id' => esc($this->request->getPost('class_id')),
+            'section_id' => esc($this->request->getPost('section_id')),
+            'address' => esc($this->request->getPost('address'))
+        ];
+
+        $file = $this->request->getFile('userfile');
+        $this->studentModel->updateStudentFunction($id, $data, $file);
+
+        $this->session->setFlashdata('flash_message', 'Data Updated Successfully');
+        return redirect()->to(base_url('admin/student'));
+    }
+
+    public function delete_student($id)
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $this->studentModel->deleteStudentFunction($id);
+
+        $this->session->setFlashdata('flash_message', 'Data Deleted Successfully');
+        return redirect()->to(base_url('admin/student'));
+    }
+
     public function get_all_teachers()
     {
         if ($this->session->get('admin_login') != 1) {
@@ -436,5 +522,13 @@ class Admin extends Controller
         $classes = $this->classModel->findAll();
 
         return $this->response->setJSON($classes);
+    }
+
+    public function get_class_sections($class_id)
+    {
+        $sections = $this->db->table('section')->getWhere(['class_id' => $class_id])->getResultArray();
+        foreach ($sections as $section) {
+            echo '<option value="' . $section['section_id'] . '">' . $section['name'] . '</option>';
+        }
     }
 }

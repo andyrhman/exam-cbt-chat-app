@@ -43,6 +43,12 @@ $routes->post('/admin/subject/create_subject', 'Admin::create_subject');
 $routes->post('/admin/subject/update_subject/(:num)', 'Admin::update_subject/$1');
 $routes->get('/admin/subject/delete/(:num)', 'Admin::delete_subject/$1');
 
+// * Student
+$routes->get('/admin/student', 'Admin::manage_student');
+$routes->post('/admin/student/create_student', 'Admin::create_student');
+$routes->post('/admin/student/update_student/(:num)', 'Admin::update_student/$1');
+$routes->get('/admin/student/delete/(:num)', 'Admin::delete_student/$1');
+
 // * Settings
 $routes->get('/setting/system_settings', 'Setting::system_settings');
 $routes->post('/setting/system_settings/update', 'Setting::update_settings');
@@ -51,6 +57,7 @@ $routes->post('/setting/system_settings/theme', 'Setting::update_theme');
 
 // * Get Data
 $routes->get('modal/popup/(:any)/(:num)', 'Modal::popup/$1/$2');
+$routes->get('/admin/get_class_sections/(:num)', 'Admin::get_class_sections/$1');
 $routes->get('/admin/classes/get_all_classes', 'Admin::get_all_classes');
 $routes->get('/admin/teacher/get_all_teachers', 'Admin::get_all_teachers');
 

@@ -31,10 +31,9 @@ class Modal extends Controller
             case 'subject':
                 $model = new \App\Models\SubjectModel();
                 break;
-            // Add more cases for different data types as needed
-            // case 'student':
-            //     $model = new \App\Models\StudentModel();
-            //     break;
+            case 'student':
+                $model = new \App\Models\StudentModel();
+                break;
         }
 
         if ($model) {

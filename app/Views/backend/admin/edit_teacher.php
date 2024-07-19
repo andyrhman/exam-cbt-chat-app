@@ -28,8 +28,8 @@
                     <div class="form-group">
                         <label for="dataImage">New Image</label>
                         <input type="file" class="form-control" id="dataImage" name="userfile"
-                            onchange="previewImage(event);">
-                        <img id="newImage" src="" alt="New Image" width="100" height="100"
+                            onchange="previewImageEdit(event);">
+                        <img id="newImageEdit" src="" alt="New Image" width="100" height="100"
                             style="display:none; margin-top: 10px;">
                     </div>
                     <button type="submit" class="btn btn-primary">Save changes</button>
@@ -57,15 +57,5 @@
                 alert('Error loading data.');
             }
         });
-    }
-
-    function previewImage(event) {
-        var reader = new FileReader();
-        reader.onload = function () {
-            var output = document.getElementById('newImage');
-            output.src = reader.result;
-            output.style.display = 'block';
-        };
-        reader.readAsDataURL(event.target.files[0]);
     }
 </script>
