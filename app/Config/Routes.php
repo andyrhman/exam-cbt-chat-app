@@ -49,6 +49,18 @@ $routes->post('/admin/student/create_student', 'Admin::create_student');
 $routes->post('/admin/student/update_student/(:num)', 'Admin::update_student/$1');
 $routes->get('/admin/student/delete/(:num)', 'Admin::delete_student/$1');
 
+// * Exam
+$routes->get('/admin/create_online_exam', 'Admin::create_online_exam');
+$routes->get('/admin/manage_online_exam', 'Admin::manage_online_exam');
+$routes->get('/admin/manage_online_exam/(:any)', 'Admin::manage_online_exam/$1');
+
+$routes->post('/admin/manage_online_exam/create', 'Admin::create_exam');
+
+
+// $routes->post('/admin/student/create_student', 'Admin::create_student');
+// $routes->post('/admin/student/update_student/(:num)', 'Admin::update_student/$1');
+// $routes->get('/admin/student/delete/(:num)', 'Admin::delete_student/$1');
+
 // * Settings
 $routes->get('/setting/system_settings', 'Setting::system_settings');
 $routes->post('/setting/system_settings/update', 'Setting::update_settings');
@@ -58,6 +70,7 @@ $routes->post('/setting/system_settings/theme', 'Setting::update_theme');
 // * Get Data
 $routes->get('modal/popup/(:any)/(:num)', 'Modal::popup/$1/$2');
 $routes->get('/admin/get_class_sections/(:num)', 'Admin::get_class_sections/$1');
+$routes->get('/admin/get_class_section_subject/(:num)', 'Admin::get_class_section_subject/$1');
 $routes->get('/admin/classes/get_all_classes', 'Admin::get_all_classes');
 $routes->get('/admin/teacher/get_all_teachers', 'Admin::get_all_teachers');
 

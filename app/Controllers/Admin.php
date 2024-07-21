@@ -11,6 +11,8 @@ use App\Models\TeacherModel;
 use App\Models\SectionModel;
 use App\Models\StudentModel;
 use App\Models\SubjectModel;
+use App\Models\OnlineExamModel;
+
 
 class Admin extends Controller
 {
@@ -24,6 +26,7 @@ class Admin extends Controller
     protected $sectionModel;
     protected $subjectModel;
     protected $studentModel;
+    protected $onlineExamModel;
 
 
     public function __construct()
@@ -35,6 +38,7 @@ class Admin extends Controller
         $this->sectionModel = new SectionModel();
         $this->subjectModel = new SubjectModel();
         $this->studentModel = new StudentModel();
+        $this->onlineExamModel = new OnlineExamModel();
         $this->request = service('request');
         $this->db = Config::connect();
         $this->session = session();
@@ -502,6 +506,190 @@ class Admin extends Controller
         return redirect()->to(base_url('admin/student'));
     }
 
+    public function create_online_exam()
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $query = $this->db->table('settings')->getWhere(['type' => 'system_title'])->getRow();
+
+        $system_title = $query->description;
+        $subjects = $this->subjectModel->selectSubject();
+
+        $data = [
+            'page_name' => 'add_online_exam',
+            'page_title' => get_phrase('Online Examination'), // You can replace this with the get_phrase() equivalent if necessary
+            'system_title' => $system_title,
+            'subjects' => $subjects
+        ];
+
+        return view('backend/index', $data);
+    }
+
+    public function manage_online_exam($status = 'active')
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $query = $this->db->table('settings')->getWhere(['type' => 'system_title'])->getRow();
+        $system_title = $query->description;
+
+        $online_exams = $this->onlineExamModel->selectOnlineExams();
+
+        $data = [
+            'page_name' => 'manage_online_exam',
+            'page_title' => get_phrase('Manage Student'), // Replace with the get_phrase() equivalent if necessary
+            'system_title' => $system_title,
+            'online_exams' => $online_exams,
+            'status' => $status
+        ];
+
+        return view('backend/index', $data);
+    }
+
+    public function validate_exam_date_active()
+    {
+        $running_year = $this->db->table('settings')->getWhere(['type' => 'session'])->getRow()->description;
+        $match = ['status !=' => 'expired', 'running_year' => $running_year];
+
+        // Fetch online exams with matching criteria
+        $online_exams = $this->db->table('online_exam')
+            ->where($match)
+            ->orderBy('exam_date', 'DESC')
+            ->get()
+            ->getResultArray();
+
+        $data = [
+            'online_exams' => $online_exams,
+            'status' => 'active'
+        ];
+
+        return view('backend/admin/manage_online_exam', $data);
+    }
+
+    public function validate_exam_date_expired()
+    {
+        $running_year = $this->db->table('settings')->getWhere(['type' => 'session'])->getRow()->description;
+        $match = ['status' => 'expired', 'running_year' => $running_year];
+
+        // Fetch online exams with matching criteria
+        $online_exams = $this->db->table('online_exam')
+            ->where($match)
+            ->orderBy('exam_date', 'DESC')
+            ->get()
+            ->getResultArray();
+
+        $data = [
+            'online_exams' => $online_exams,
+            'status' => 'expired'
+        ];
+
+        return view('backend/admin/manage_online_exam', $data);
+    }
+
+
+    public function create_exam()
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $request = service('request');
+
+        // Ensure class_id, subject_id, and section_id are not empty
+        if (!empty($request->getPost('class_id')) && !empty($request->getPost('subject_id')) && !empty($request->getPost('section_id'))) {
+            $exam_date = strtotime($request->getPost('exam_date'));
+            $time_start = strtotime($request->getPost('time_start'));
+            $time_end = strtotime($request->getPost('time_end'));
+
+            // Calculate duration in seconds
+            $duration = $time_end - $time_start;
+
+            $data = [
+                'code' => substr(md5(uniqid(rand(), true)), 0, 7),
+                'title' => esc($request->getPost('exam_title')),
+                'class_id' => esc($request->getPost('class_id')),
+                'section_id' => esc($request->getPost('section_id')),
+                'subject_id' => esc($request->getPost('subject_id')),
+                'minimum_percentage' => esc($request->getPost('minimum_percentage')),
+                'instruction' => esc($request->getPost('instruction')),
+                'exam_date' => $exam_date,
+                'time_start' => $time_start,
+                'time_end' => $time_end,
+                'duration' => $duration,
+                'status' => 'pending',
+                'running_year' => $this->db->table('settings')->getWhere(['type' => 'session'])->getRow()->description
+            ];
+
+            // Assuming the method in your model is named createExam
+            $this->onlineExamModel->createOnlineExam($data);
+
+            $this->session->setFlashdata('flash_message', 'Data Added Successfully');
+            return redirect()->to(base_url('admin/manage_online_exam'));
+        } else {
+            $this->session->setFlashdata('flash_message', 'Ensure Class, Subject and Section are selected');
+            return redirect()->to(base_url('admin/manage_online_exam'));
+        }
+    }
+
+    public function update_exam($id)
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $request = service('request');
+
+        // Ensure class_id, subject_id, and section_id are not empty
+        if (!empty($request->getPost('class_id')) && !empty($request->getPost('subject_id')) && !empty($request->getPost('section_id'))) {
+            $exam_date = strtotime($request->getPost('exam_date'));
+            $time_start = strtotime($request->getPost('time_start'));
+            $time_end = strtotime($request->getPost('time_end'));
+
+            // Calculate duration in seconds
+            $duration = $time_end - $time_start;
+
+            $data = [
+                'code' => substr(md5(uniqid(rand(), true)), 0, 7),
+                'title' => esc($request->getPost('exam_title')),
+                'class_id' => esc($request->getPost('class_id')),
+                'section_id' => esc($request->getPost('section_id')),
+                'subject_id' => esc($request->getPost('subject_id')),
+                'minimum_percentage' => esc($request->getPost('minimum_percentage')),
+                'instruction' => esc($request->getPost('instruction')),
+                'exam_date' => $exam_date,
+                'time_start' => $time_start,
+                'time_end' => $time_end,
+                'duration' => $duration
+            ];
+
+            //?  $id = $request->getPost('online_exam_id');
+
+            // Assuming the method in your model is named createExam
+            $this->onlineExamModel->updateOnlineExam($id, $data);
+
+            $this->session->setFlashdata('flash_message', 'Data Updated Successfully');
+            return redirect()->to(base_url('admin/manage_online_exam'));
+        } else {
+            $this->session->setFlashdata('flash_message', 'Ensure Class, Subject and Section are selected');
+            return redirect()->to(base_url('admin/manage_online_exam'));
+        }
+    }
+
+    public function delete_exam($id)
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $this->onlineExamModel->deleteOnlineExam($id);
+
+        $this->session->setFlashdata('flash_message', 'Data Deleted Successfully');
+        return redirect()->to(base_url('admin/manage_online_exam'));
+    }
+
     public function get_all_teachers()
     {
         if ($this->session->get('admin_login') != 1) {
@@ -530,5 +718,11 @@ class Admin extends Controller
         foreach ($sections as $section) {
             echo '<option value="' . $section['section_id'] . '">' . $section['name'] . '</option>';
         }
+    }
+
+    public function get_class_section_subject($class_id)
+    {
+        $page_data['class_id'] = $class_id;
+        return view('backend/admin/class_routine_section_subject_selector', $page_data);
     }
 }
