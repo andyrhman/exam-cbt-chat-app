@@ -52,14 +52,15 @@ $routes->get('/admin/student/delete/(:num)', 'Admin::delete_student/$1');
 // * Exam
 $routes->get('/admin/create_online_exam', 'Admin::create_online_exam');
 $routes->get('/admin/manage_online_exam', 'Admin::manage_online_exam');
-$routes->get('/admin/manage_online_exam/(:any)', 'Admin::manage_online_exam/$1');
-
 $routes->post('/admin/manage_online_exam/create', 'Admin::create_exam');
+$routes->get('/admin/manage_online_exam/delete/(:num)', 'Admin::delete_exam/$1');
+$routes->get('/admin/manage_online_exam/(:any)', 'Admin::manage_online_exam/$1'); //! Always Keep this more general route last
 
+// * Question
+$routes->get('/admin/manage_online_exam_question', 'Admin::manage_online_exam_question');
+$routes->get('/admin/manage_online_exam_question/(:any)', 'Admin::manage_online_exam_question/$1');
+// $routes->get('/admin/manage_online_exam_question/(:any)/(:any)', 'Admin::load_question_type/$1/$2');
 
-// $routes->post('/admin/student/create_student', 'Admin::create_student');
-// $routes->post('/admin/student/update_student/(:num)', 'Admin::update_student/$1');
-// $routes->get('/admin/student/delete/(:num)', 'Admin::delete_student/$1');
 
 // * Settings
 $routes->get('/setting/system_settings', 'Setting::system_settings');

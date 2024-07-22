@@ -74,11 +74,12 @@ $db = Config::connect();
                                     <i class="fa fa-pencil"></i>
                                 </a>
                                 <!-- DELETION LINK -->
-                                <a href="#" onclick="confirm_modal('<?php echo site_url('admin/manage_online_exam/delete/' . $row['online_exam_id']); ?>');" class="btn btn-xs btn-circle btn-danger" style="color:white">
+                                <button onclick="confirm_modal('<?= base_url('admin/manage_online_exam/delete/' . $row['online_exam_id']); ?>');" class="btn btn-xs btn-circle btn-danger" style="color:white">
                                     <i class="fa fa-times"></i>
-                                </a>
+                                </button>
+                                
                                 <?php if ($row['status'] == 'pending') : ?>
-                                    <a href="#" onclick="confirm_modal('<?php echo site_url('admin/manage_online_exam_status/' . $row['online_exam_id'] . '/published'); ?>', 'generic_confirmation');" type="button" class="btn btn-success btn-rounded btn-sm" style="color:white"><i class="fa fa-share-alt" aria-hidden="true"></i> <?php echo get_phrase('publish_now'); ?></a>
+                                    <a href="#" onclick="publish_modal('<?php echo site_url('admin/manage_online_exam_status/' . $row['online_exam_id'] . '/published'); ?>', 'generic_confirmation');" type="button" class="btn btn-success btn-rounded btn-sm" style="color:white"><i class="fa fa-share-alt" aria-hidden="true"></i> <?php echo get_phrase('publish_now'); ?></a>
                                 <?php elseif ($row['status'] == 'published') : ?>
                                     <a href="#" onclick="confirm_modal('<?php echo site_url('admin/manage_online_exam_status/' . $row['online_exam_id'] . '/expired'); ?>', 'generic_confirmation');" type="button" class="btn btn-danger btn-rounded btn-sm" style="color:white"><i class="fa fa-times" aria-hidden="true"></i> <?php echo get_phrase('cancel_now'); ?></a>
                                 <?php elseif ($row['status'] == 'expired') : ?>

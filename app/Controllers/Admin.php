@@ -536,7 +536,18 @@ class Admin extends Controller
         $query = $this->db->table('settings')->getWhere(['type' => 'system_title'])->getRow();
         $system_title = $query->description;
 
-        $online_exams = $this->onlineExamModel->selectOnlineExams();
+        // Fetch the running year from settings
+        $running_year = $this->db->table('settings')->getWhere(['type' => 'session'])->getRow()->description;
+
+        // Determine the match condition based on the status
+        $match = $status === 'expired' ? ['status' => 'expired', 'running_year' => $running_year] : ['status !=' => 'expired', 'running_year' => $running_year];
+
+        // Fetch online exams with matching criteria
+        $online_exams = $this->db->table('online_exam')
+            ->where($match)
+            ->orderBy('exam_date', 'DESC')
+            ->get()
+            ->getResultArray();
 
         $data = [
             'page_name' => 'manage_online_exam',
@@ -548,47 +559,6 @@ class Admin extends Controller
 
         return view('backend/index', $data);
     }
-
-    public function validate_exam_date_active()
-    {
-        $running_year = $this->db->table('settings')->getWhere(['type' => 'session'])->getRow()->description;
-        $match = ['status !=' => 'expired', 'running_year' => $running_year];
-
-        // Fetch online exams with matching criteria
-        $online_exams = $this->db->table('online_exam')
-            ->where($match)
-            ->orderBy('exam_date', 'DESC')
-            ->get()
-            ->getResultArray();
-
-        $data = [
-            'online_exams' => $online_exams,
-            'status' => 'active'
-        ];
-
-        return view('backend/admin/manage_online_exam', $data);
-    }
-
-    public function validate_exam_date_expired()
-    {
-        $running_year = $this->db->table('settings')->getWhere(['type' => 'session'])->getRow()->description;
-        $match = ['status' => 'expired', 'running_year' => $running_year];
-
-        // Fetch online exams with matching criteria
-        $online_exams = $this->db->table('online_exam')
-            ->where($match)
-            ->orderBy('exam_date', 'DESC')
-            ->get()
-            ->getResultArray();
-
-        $data = [
-            'online_exams' => $online_exams,
-            'status' => 'expired'
-        ];
-
-        return view('backend/admin/manage_online_exam', $data);
-    }
-
 
     public function create_exam()
     {
@@ -606,6 +576,7 @@ class Admin extends Controller
 
             // Calculate duration in seconds
             $duration = $time_end - $time_start;
+            $testStatus = 'pending';
 
             $data = [
                 'code' => substr(md5(uniqid(rand(), true)), 0, 7),
@@ -619,7 +590,7 @@ class Admin extends Controller
                 'time_start' => $time_start,
                 'time_end' => $time_end,
                 'duration' => $duration,
-                'status' => 'pending',
+                'status' => $testStatus,
                 'running_year' => $this->db->table('settings')->getWhere(['type' => 'session'])->getRow()->description
             ];
 
@@ -689,6 +660,46 @@ class Admin extends Controller
         $this->session->setFlashdata('flash_message', 'Data Deleted Successfully');
         return redirect()->to(base_url('admin/manage_online_exam'));
     }
+
+    public function manage_online_exam_question($online_exam_id = null, $task = null, $type = null)
+    {
+        if ($this->session->get('admin_login') != 1) {
+            return redirect()->to(base_url('login'));
+        }
+
+        if ($task == 'add') {
+            if ($type == 'multiple_choice') {
+                $this->onlineExamModel->add_mutliple_choice_question_to_online_exam($online_exam_id);
+            } else if ($type == 'true_false') {
+                $this->onlineExamModel->add_true_false_question_to_online_exam($online_exam_id);
+            } elseif ($type == 'fill_in_the_blanks') {
+                $this->onlineExamModel->add_fill_in_the_blanks_question_to_online_exam($online_exam_id);
+            }
+
+            return redirect()->to(base_url('admin/manage_online_exam_question' . $online_exam_id));
+        }
+
+        $query = $this->db->table('settings')->getWhere(['type' => 'system_title'])->getRow();
+        $system_title = $query->description;
+
+        $data = [
+            'online_exam_id' => $online_exam_id,
+            'page_name' => 'manage_online_exam_question',
+            'page_title' => $this->db->table('online_exam')->getWhere(['online_exam_id' => $online_exam_id])->getRow()->title, // Replace with the get_phrase() equivalent if necessary
+            'system_title' => $system_title,
+        ];
+
+        return view('backend/index', $data);
+    }
+
+    // public function load_question_type($type, $online_exam_id){
+    //     $data = [
+    //         'online_exam_id' => $online_exam_id,
+    //         'question_type' => $type
+    //     ];
+
+    //     return view('backend/admin/online_exam_add_'.$type, $data);
+    // }
 
     public function get_all_teachers()
     {
